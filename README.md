@@ -25,7 +25,7 @@ Admin login.
 ```json
 {
   "success": true,
-  "token": "`JWT TOKEN`",
+  "token": "JWT TOKEN",
   "message": "admin logged in successfully"
 }
 ```
