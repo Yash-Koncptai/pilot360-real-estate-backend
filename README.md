@@ -1,4 +1,4 @@
-# 🌾 Chookhi Jameen API
+# 🌾 Chookhi Jameen APIs
 
 ## 📘 Admin API Endpoints
 
