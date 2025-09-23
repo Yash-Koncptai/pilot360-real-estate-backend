@@ -2,6 +2,7 @@ const Property = require("../../model/admin/property.model")
 
 class PropertyController {
     async addproperty (req, res, next) {
+        console.log(`${req.method} ${req.url}`)
         try {
             const { title, price, type, size, location, latitude, longitude, description, privacy, features } = req.body
 
