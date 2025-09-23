@@ -26,7 +26,7 @@ Admin login.
 {
   "success": true,
   "token": "JWT TOKEN",
-  "message": "admin logged in successfully"
+  "message": "admin logged in successfully."
 }
 ```
 
@@ -34,6 +34,47 @@ Admin login.
 
 * **400 Bad Request** – invalid credentials.
 
+---
+---
+
+### `GET /api/admin/property`
+
+Properties fetching.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "properties fetched successfully.",
+  "properties": [
+        {
+            "id": 1,
+            "title": "editing land",
+            "price": 67,
+            "type": "edit type",
+            "size": "56 sqft",
+            "location": "kolkata",
+            "latitude": 8.3,
+            "longitude": 6.34,
+            "description": "editing description",
+            "private": true,
+            "features": null,
+            "createdAt": "2025-09-23T11:24:25.527Z",
+            "updatedAt": "2025-09-23T11:26:29.755Z"
+        }
+    ],
+}
+```
 ---
 ---
 
@@ -72,7 +113,7 @@ Content-Type: application/json
 ```json
 {
   "success": true,
-  "message": "property added successfully",
+  "message": "property added successfully.",
   "property": {
     "id": 1,
     "title": "Farm Land in Rajasthan",
@@ -133,7 +174,7 @@ Content-Type: application/json
 ```json
 {
   "success": true,
-  "message": "property updated successfully",
+  "message": "property updated successfully.",
   "property": {
     "id": 1,
     "title": "Farm Land in Rajasthan",

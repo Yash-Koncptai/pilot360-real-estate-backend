@@ -1,6 +1,16 @@
 const Property = require("../../model/admin/property.model")
 
 class PropertyController {
+    async showproperties (req, res, next) {
+        try {
+            const properties = await Property.findAll()
+
+            res.status(200).json({ success: true, properties: properties, message: "properties fetched successfully." })
+        } catch (err) {
+            next(err)
+        }
+    }
+
     async addproperty (req, res, next) {
         try {
             const { title, price, type, size, location, latitude, longitude, description, privacy, features } = req.body
@@ -21,7 +31,7 @@ class PropertyController {
                 features: features,
             })
 
-            res.status(201).json({ success: true, property: property, message: "property added successfully" });
+            res.status(201).json({ success: true, property: property, message: "property added successfully." });
         } catch (err) {
             next(err)
         }
@@ -54,7 +64,7 @@ class PropertyController {
 
             await property.save()
 
-            res.status(200).json({ success: true, property: property, message:"property updated successfully"})
+            res.status(200).json({ success: true, property: property, message:"property updated successfully."})
         } catch (err) {
             next(err)
         }
