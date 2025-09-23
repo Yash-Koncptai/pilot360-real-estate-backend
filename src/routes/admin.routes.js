@@ -7,5 +7,6 @@ const router = express.Router()
 
 router.post("/login", adminController.login)
 router.post("/property/add", auth, propertyController.addproperty)
+router.put("/property/update", auth, propertyController.editproperty)
 
 module.exports = router
