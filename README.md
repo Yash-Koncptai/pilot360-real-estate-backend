@@ -4,6 +4,16 @@
 
 ---
 
+### `Middleware`
+
+**Error Responses:**
+
+* **401 Unauthorized** – authorization token missing or malformed.
+* **403 Forbidden** - invalid or expired token.
+
+---
+---
+
 ### `POST /api/admin/login`
 
 Admin login.

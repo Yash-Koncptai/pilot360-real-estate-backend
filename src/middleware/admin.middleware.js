@@ -9,7 +9,7 @@ function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ success: false, message: "authorization token missing or malformed" })
+    return res.status(401).json({ success: false, message: "authorization token missing or malformed." })
   }
 
   const token = authHeader.split(" ")[1];
@@ -17,7 +17,7 @@ function verifyJWT(req, res, next) {
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
     if (decoded.role != "admin"){
-       return res.status(403).json({ success: false, message: "invalid or expired token" })
+       return res.status(403).json({ success: false, message: "invalid or expired token." })
     } 
     
     req.user = {
@@ -26,7 +26,7 @@ function verifyJWT(req, res, next) {
     };
     next();
   } catch (err) {
-    return res.status(403).json({ success: false, message: "invalid or expired token" })
+    return res.status(403).json({ success: false, message: "invalid or expired token." })
   }
 }
 
