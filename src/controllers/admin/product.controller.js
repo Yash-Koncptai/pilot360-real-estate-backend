@@ -69,6 +69,23 @@ class PropertyController {
             next(err)
         }
     }
+
+    async deleteproperty (req, res, next) {
+        try {
+            const query = req.query
+
+            const property = await Property.findOne({ where: { id: query.id } })
+            if (!property) {
+                return res.status(404).json({ success: false, message: "property not found." })
+            }
+
+            await property.destroy()
+
+            res.status(200).json({ success: true, message:"property deleted successfully."})
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = new PropertyController()

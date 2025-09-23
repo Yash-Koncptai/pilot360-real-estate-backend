@@ -199,3 +199,32 @@ Content-Type: application/json
 * **404 Not Found** – property not found.
 
 ---
+---
+
+### `DELETE /api/admin/property/delete?id=<property id>`
+
+Property deleting.
+
+**Method:** `DELETE`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "property deleted successfully."
+}
+```
+
+**Error Responses:**
+
+* **404 Not Found** – property not found.
+
+---

@@ -12,5 +12,6 @@ router.post("/login", adminController.login)
 router.get("/property", auth, propertyController.showproperties)
 router.post("/property/add", auth, propertyController.addproperty)
 router.put("/property/update", auth, propertyController.editproperty)
+router.delete("/property/delete", auth, propertyController.deleteproperty)
 
 module.exports = router
