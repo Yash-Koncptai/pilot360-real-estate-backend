@@ -1,12 +1,11 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 
-const Admin = sequelize.define("Admin", {
+const Admin = sequelize.define("admin", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false,
-    defaultValue: sequelize.literal("nextval('custom_admin_id_seq')")
+    autoIncrement: true,
   },
   username: {
     type: DataTypes.STRING,

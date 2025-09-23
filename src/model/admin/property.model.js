@@ -1,11 +1,11 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 
-const Property = sequelize.define("Property", {
+const Property = sequelize.define("property", {
   id: { 
-    type: DataTypes.INTEGER, 
-    autoIncrement: true, 
-    primaryKey: true 
+    type: DataTypes.INTEGER,  
+    primaryKey: true,
+    autoIncrement: true,
   },
   title: { 
     type: DataTypes.STRING, 

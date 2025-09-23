@@ -4,8 +4,11 @@ const app = require("./app")
 const sequelize = require("./config/database")
 const bcrypt = require("bcryptjs")
 const Admin = require("./model/admin/admin.model")
+const cors = require('cors')
 
 const PORT = process.env.PORT;
+
+app.use(cors());
 
 (async () => {
   try {
