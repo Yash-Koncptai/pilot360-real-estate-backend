@@ -98,7 +98,7 @@ Content-Type: application/json
 ---
 ---
 
-### `POST /api/admin/property/update`
+### `POST /api/admin/property/update?id=<property id>`
 
 Property updating.
 
