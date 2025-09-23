@@ -4,7 +4,6 @@ const { generateJWT } = require("../../utils/jwt")
 
 class AdminController {
     async login (req, res, next) {
-        console.log(`${req.method} ${req.url}`)
         try {
             const { username, password } = req.body
             const admin = await Admin.findOne({ where: { username } }) 
