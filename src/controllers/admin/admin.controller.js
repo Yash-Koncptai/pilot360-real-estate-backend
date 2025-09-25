@@ -6,8 +6,9 @@ class AdminController {
     async login (req, res, next) {
         try {
             const { username, password } = req.body
-            const admin = await Admin.findOne({ where: { username } }) 
+            if (!username || !password) return res.status(400).json({ success: false, message: "missing required fields." })
 
+            const admin = await Admin.findOne({ where: { username } }) 
             if (!admin) return res.status(400).json({ success: false, message: "invalid credentials." })
             
             const isMatch = await bcrypt.compare(password, admin.password)

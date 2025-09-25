@@ -43,6 +43,7 @@ Admin login.
 **Error Responses:**
 
 * **400 Bad Request** – invalid credentials.
+* **400 Bad Request** – missing required fields.
 
 ---
 ---
