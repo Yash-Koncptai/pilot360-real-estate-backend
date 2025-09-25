@@ -285,6 +285,7 @@ User signup.
 **Error Responses:**
 
 * **400 Bad Request** – missing required fields.
+* **409 Bad Request** - user already exists.
 
 ---
 ---
@@ -316,8 +317,7 @@ User otp verification.
 
 **Error Responses:**
 
-* **400 Bad Request** – OTP expired or not found.
-* **400 Bad Request** – invalid OTP.
+* **400 Bad Request** – OTP expired or invalid.
 
 ---
 ---

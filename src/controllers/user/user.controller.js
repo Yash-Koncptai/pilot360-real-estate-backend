@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs")
 const User = require("../../model/user/user.model")
 const { generateJWT } = require("../../utils/jwt")
-const { client } = require("../../config/redis")
+const OTP = require("../../model/user/otp.model")
 const { Op } = require('sequelize')
 
 class UserController {
@@ -18,31 +18,34 @@ class UserController {
                 password: hashedPassword,
                 verification: false,
             })
-            const otp = Math.floor(100000 + Math.random() * 900000).toString()
 
-            await client.set(`otp:${email}`, otp, {
-                EX: 180,
-            });
+            const otp = Math.floor(100000 + Math.random() * 900000).toString()
+            const expiresAt = new Date(Date.now() + 3 * 60 * 1000)
+            await OTP.create({
+                email: email,
+                otp: otp,
+                expires_at: expiresAt,
+            })
             // sendOtp()
 
             res.status(201).json({ success: true, otp: otp, message: "user created successfully." })
         } catch (err) {
-            next(err)
+            res.status(409).json({ success:false, message: "user already exist." })
         }
     }
 
     async verifyotp (req, res, next) {
         try {
             const { email, otp } = req.body
-            const data = await client.get(`otp:${email}`)
+            const data = await OTP.findOne({ where: { email: email, otp: otp, expires_at: { [Op.gt]: new Date() } } })
 
-            if (!data) return res.status(400).json({ success: false, message: "OTP expired or not found." })
-
-            if (data != otp) return res.status(400).json({ success: false, message: "invalid OTP." })
+            if (!data) return res.status(400).json({ success: false, message: "OTP expired or invalid." })
 
             const user = await User.findOne({ where: { email: email } })
             user.verification = true
             await user.save()
+
+            await data.destroy()
 
             res.status(200).json({ success: true, message: "email and mobile verified successfully." });
         } catch (err) {
