@@ -331,7 +331,7 @@ User login.
 
 ```json
 {
-  "identifier": "9876543210", // email or mobile number
+  "identifier": "9876543210",  email or mobile number
   "password": "mypassword",
 }
 ```
