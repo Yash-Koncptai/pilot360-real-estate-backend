@@ -285,7 +285,7 @@ User signup.
 **Error Responses:**
 
 * **400 Bad Request** – missing required fields.
-* **409 Bad Request** - user already exists.
+* **409 Conflict** - user already exists.
 
 ---
 ---
@@ -318,6 +318,39 @@ User otp verification.
 **Error Responses:**
 
 * **400 Bad Request** – OTP expired or invalid.
+* **404 Not Found** – user not found.
+
+---
+---
+
+### `POST /api/user/otp`
+
+Otp resend.
+
+**Method:** `POST`
+**Request Body:**
+
+```json
+{
+  "email": "myemail@gmail.com", 
+}
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+    "success": true,
+    "otp": "296068",
+    "message": "OTP send successfully."
+}
+```
+
+**Error Responses:**
+
+* **404 Not Found** – user not found.
 
 ---
 ---
@@ -352,6 +385,6 @@ User login.
 
 * **400 Bad Request** – missing required fields.
 * **400 Bad Request** – invalid credentials.
-* **403 Bad Request** – email and mobile number not verified.
+* **403 Forbidden** – email and mobile number not verified.
 
 ---

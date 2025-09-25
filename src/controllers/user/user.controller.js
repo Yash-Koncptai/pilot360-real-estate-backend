@@ -42,12 +42,38 @@ class UserController {
             if (!data) return res.status(400).json({ success: false, message: "OTP expired or invalid." })
 
             const user = await User.findOne({ where: { email: email } })
+            if (!user) return res.status(404).json({ success: false, message: "user not found." })
             user.verification = true
             await user.save()
 
             await data.destroy()
 
             res.status(200).json({ success: true, message: "email and mobile verified successfully." });
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async otprequest (req, res, next) {
+        try {
+            const { email } = req.body
+
+            const user = await User.findOne({ where: { email: email } })
+            if (!user) return res.status(404).json({ success: false, message: "user not found." })
+
+            await OTP.destroy({ where: { email: email } })
+
+            
+            const otp = Math.floor(100000 + Math.random() * 900000).toString()
+            const expiresAt = new Date(Date.now() + 3 * 60 * 1000)
+            await OTP.create({
+                email: email,
+                otp: otp,
+                expires_at: expiresAt,
+            })
+            // sendOtp()
+
+             res.status(200).json({ success: true, otp: otp, message: "OTP send successfully." })
         } catch (err) {
             next(err)
         }
