@@ -1,6 +1,7 @@
 const express = require("express")
 const sequelize = require("./config/database");
 const adminRoutes = require("./routes/admin.routes");
+const userRoutes = require("./routes/user.routes");
 const cors = require('cors')
 const logger = require("./utils/logger")
 
@@ -10,6 +11,7 @@ app.use(cors())
 app.use(logger)
 
 app.use("/api/admin", adminRoutes)
+app.use("/api/user", userRoutes)
 
 app.use((err, req, res, next) => {
   console.error(err.message)

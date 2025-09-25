@@ -4,6 +4,7 @@ const app = require("./app")
 const sequelize = require("./config/database")
 const bcrypt = require("bcryptjs")
 const Admin = require("./model/admin/admin.model")
+const { connectRedis } = require("./config/redis")
 
 const PORT = process.env.PORT;
 
@@ -25,6 +26,8 @@ const PORT = process.env.PORT;
         password: hashedPassword,
       });
     }
+
+    await connectRedis()
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`)

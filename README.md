@@ -238,3 +238,119 @@ Content-Type: application/json
 * **404 Not Found** – property not found.
 
 ---
+
+## 📘 User API Endpoints
+
+---
+
+### `Middleware`
+
+**Error Responses:**
+
+* **401 Unauthorized** – authorization token missing or malformed.
+* **403 Forbidden** - invalid or expired token.
+
+---
+---
+
+### `POST /api/user/signup`
+
+User signup.
+
+**Method:** `POST`
+**Request Body:**
+
+```json
+{
+  "name": "myname",
+  "email": "myemail@gmail.com",
+  "mobile": "9876543210", 
+  "password": "mypassword",
+}
+```
+
+**Success Response:**
+
+* **Code:** `201 OK`
+
+```json
+{
+    "success": true,
+    "otp": "OTP",
+    "message": "user created successfully."
+}
+```
+
+**Error Responses:**
+
+* **400 Bad Request** – missing required fields.
+
+---
+---
+
+### `POST /api/user/otp/verify`
+
+User otp verification.
+
+**Method:** `POST`
+**Request Body:**
+
+```json
+{
+  "email": "myemail@gmail.com",
+  "otp": "OTP", 
+}
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+    "success": true,
+    "message": "email and mobile verified successfully."
+}
+```
+
+**Error Responses:**
+
+* **400 Bad Request** – OTP expired or not found.
+* **400 Bad Request** – invalid OTP.
+
+---
+---
+
+### `POST /api/user/login`
+
+User login.
+
+**Method:** `POST`
+**Request Body:**
+
+```json
+{
+  "identifier": "9876543210", // email or mobile number
+  "password": "mypassword",
+}
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "token": "JWT TOKEN",
+  "message": "user logged in successfully."
+}
+```
+
+**Error Responses:**
+
+* **400 Bad Request** – missing required fields.
+* **400 Bad Request** – invalid credentials.
+* **403 Bad Request** – email and mobile number not verified.
+
+---
