@@ -48,6 +48,34 @@ Admin login.
 ---
 ---
 
+### `GET /api/admin/dashboard`
+
+Admin dashboard.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+    "success": true,
+    "properties": "NUMBER OF PROPERTIES",
+    "available": "NUMBER OF AVAILABLE PROPERTIES",
+    "views": "TOTAL VIEWS OF PROPERTIES",
+    "message": "dashboard details fetched successfully."
+}
+```
+---
+---
+
 ### `GET /api/admin/property`
 
 Properties fetching.
@@ -150,7 +178,7 @@ Content-Type: application/json
 ---
 ---
 
-### `POST /api/admin/property/update?id=<property id>`
+### `POST /api/admin/property/update?id=<PROPERTY ID>`
 
 Property updating.
 
@@ -212,7 +240,7 @@ Content-Type: application/json
 ---
 ---
 
-### `DELETE /api/admin/property/delete?id=<property id>`
+### `DELETE /api/admin/property/delete?id=<PROPERTY ID>`
 
 Property deleting.
 
@@ -386,5 +414,45 @@ User login.
 * **400 Bad Request** – missing required fields.
 * **400 Bad Request** – invalid credentials.
 * **403 Forbidden** – email and mobile number not verified.
+
+---
+---
+
+### `GET /api/user/property?id=<PROPERTY ID>`
+
+Property fetching.
+
+**Method:** `GET`
+**Request Body:**
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "property": {
+    "id": 1,
+    "title": "Farm Land in Rajasthan",
+    "price": 500000,
+    "type": "Agricultural",
+    "size": "10 acres",
+    "location": "Jaipur, Rajasthan",
+    "latitude": 26.9124,
+    "longitude": 75.7873,
+    "description": "Fertile land with canal access.",
+    "private": true,
+    "features": ["Well", "Canal", "Fenced"],
+    "updatedAt": "2025-09-22T13:20:52.081Z",
+    "createdAt": "2025-09-22T13:20:52.081Z"
+  },
+  "message": "property fetched successfully."
+}
+```
+
+**Error Responses:**
+
+* **404 Not Found** – property not found.
 
 ---

@@ -1,7 +1,8 @@
 const express = require("express")
 const auth = require("../middleware/admin.middleware")
 const adminController = require("../controllers/admin/admin.controller")
-const propertyController = require("../controllers/admin/product.controller")
+const propertyController = require("../controllers/admin/property.controller")
+const dashboardController = require("../controllers/admin/dashboard.controller")
 
 const router = express.Router()
 
@@ -13,5 +14,8 @@ router.get("/property", auth, propertyController.showproperties)
 router.post("/property/add", auth, propertyController.addproperty)
 router.put("/property/update", auth, propertyController.editproperty)
 router.delete("/property/delete", auth, propertyController.deleteproperty)
+
+// Dashboard
+router.get("/dashboard", auth, dashboardController.dashboard)
 
 module.exports = router

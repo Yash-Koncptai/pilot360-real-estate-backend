@@ -44,7 +44,11 @@ const Property = sequelize.define("property", {
   },
   features: {
     type: DataTypes.ARRAY(DataTypes.STRING)
-  }
+  },
+  views: {
+   type: DataTypes.INTEGER
+  },
+
 }, { 
     timestamps: true 
 });
