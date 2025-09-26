@@ -418,6 +418,42 @@ User login.
 ---
 ---
 
+### `GET /api/user/properties`
+
+Properties fetching.
+
+**Method:** `GET`
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "properties fetched successfully.",
+  "properties": [
+        {
+            "id": 1,
+            "title": "editing land",
+            "price": 67,
+            "type": "edit type",
+            "size": "56 sqft",
+            "location": "kolkata",
+            "latitude": 8.3,
+            "longitude": 6.34,
+            "description": "editing description",
+            "private": true,
+            "features": null,
+            "createdAt": "2025-09-23T11:24:25.527Z",
+            "updatedAt": "2025-09-23T11:26:29.755Z"
+        }
+    ],
+}
+```
+---
+---
+
 ### `GET /api/user/property?id=<PROPERTY ID>`
 
 Property fetching.

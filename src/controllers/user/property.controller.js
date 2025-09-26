@@ -1,6 +1,17 @@
 const Property = require("../../model/admin/property.model")
 
 class PropertyController {
+
+    async propertiesfetch (req, res, next) {
+        try {
+            const properties = await Property.findAll()
+
+            res.status(200).json({ success: true, properties: properties, message: "properties fetched successfully." })
+        } catch (err) {
+            next(err)
+        }
+    }
+
     async propertyfetch (req, res, next) {
         try {
             const query = req.query

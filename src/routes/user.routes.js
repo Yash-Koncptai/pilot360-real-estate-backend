@@ -11,6 +11,7 @@ router.post("/otp", userController.otprequest)
 router.post("/login", userController.login)
 
 // Property
-router.get("/property",propertyController.propertyfetch)
+router.get("/properties", propertyController.propertiesfetch)
+router.get("/property", propertyController.propertyfetch)
 
 module.exports = router
