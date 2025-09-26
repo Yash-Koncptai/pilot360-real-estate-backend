@@ -295,6 +295,43 @@ Content-Type: application/json
 * **404 Not Found** – property not found.
 
 ---
+---
+
+### `GET /api/admin/users`
+
+Users fetching.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "users": [
+      {
+          "id": 7,
+          "name": "test",
+          "mobile": "9090909090",
+          "email": "test@gmail.com",
+          "password": "$2b$10$58jGQ1WczemFYacDrPoqduWzjI2Ps3zTNHKgcCPz.1uQN4nZMAArG",
+          "verification": true,
+          "createdAt": "2025-09-25T11:32:33.632Z",
+          "updatedAt": "2025-09-25T11:32:58.997Z"
+      }
+  ],
+  "message": "users fetch successfully."
+}
+```
+---
 
 ## 📘 User API Endpoints
 
