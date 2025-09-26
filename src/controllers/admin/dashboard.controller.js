@@ -17,6 +17,21 @@ class DashboardController {
             next (err)
         }
     }
+
+    async analytics (req, res, next) {
+        try {
+            let m = {}
+
+            const properties = await Property.findAll()
+            for (const property of properties) {
+                m[property.type] = (m[property.type] || 0) + 1
+            }
+
+            res.status(200).json({ success: true, property_performance: m, message: "analytics details fetched successfully." })
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = new DashboardController()

@@ -76,6 +76,34 @@ Content-Type: application/json
 ---
 ---
 
+### `GET /api/admin/analytics`
+
+Analytics.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+* **Code:** `200 OK`
+
+```json
+{
+    "success": true,
+    "property_performance": {
+        "Agricultural": 1
+    },
+    "message": "analytics details fetched successfully."
+}
+```
+---
+---
+
 ### `GET /api/admin/property`
 
 Properties fetching.

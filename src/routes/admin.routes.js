@@ -17,5 +17,6 @@ router.delete("/property/delete", auth, propertyController.deleteproperty)
 
 // Dashboard
 router.get("/dashboard", auth, dashboardController.dashboard)
+router.get("/analytics", dashboardController.analytics)
 
 module.exports = router
