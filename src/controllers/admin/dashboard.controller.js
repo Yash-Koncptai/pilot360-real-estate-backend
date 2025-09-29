@@ -1,4 +1,5 @@
 const Property = require("../../model/admin/property.model")
+const Inquiry = require("../../model/user/inquiry.model")
 
 class DashboardController {
     async dashboard (req, res, next) {
@@ -12,7 +13,9 @@ class DashboardController {
                 if (!property.private) available++
             }
 
-            res.status(200).json({ success: true, properties: count, available: available, views: views, message: "dashboard details fetched successfully." })
+            const inquiries = await Inquiry.findAll()
+
+            res.status(200).json({ success: true, properties: count, available: available, views: views, inquiries: inquiries.length, message: "dashboard details fetched successfully." })
         } catch (err) {
             next (err)
         }
@@ -20,14 +23,44 @@ class DashboardController {
 
     async analytics (req, res, next) {
         try {
-            let m = {}
+            let pp = {}
+            let mt = {
+                "This Month": 0,
+                "Last Month": 0,
+                "Growth Rate": ""
+            }
+            let growth = 0
 
             const properties = await Property.findAll()
             for (const property of properties) {
-                m[property.type] = (m[property.type] || 0) + 1
+                pp[property.type] = (pp[property.type] || 0) + 1
             }
 
-            res.status(200).json({ success: true, property_performance: m, message: "analytics details fetched successfully." })
+            const now = new Date()
+            const current = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+            const last = new Date(now.getFullYear(), now.getMonth(), 1)
+            const inquiries = await Inquiry.findAll()
+            for (const inquiry of inquiries) {
+                if (inquiry.createdAt < current) {
+                    mt["This Month"] = (mt["This Month"] || 0) + 1
+                }
+                if (inquiry.createdAt < last) {
+                    mt["Last Month"] = (mt["Last Month"] || 0) + 1
+                }
+            }
+
+            let perc = ""
+            growth = (mt["This Month"] -  mt["Last Month"])
+            if (mt["Last Month"] != 0) {
+                growth = (growth / mt["Last Month"]) * 100
+                perc = "+" + growth + "%"
+            } 
+            if (mt["Last Month"] == 0 && mt["This Month"] != 0) {
+                perc = "N/A"
+            }
+            mt["Growth Rate"] = perc
+
+            res.status(200).json({ success: true, property_performance: pp, monthly_trend: mt, message: "analytics details fetched successfully." })
         } catch (err) {
             next(err)
         }

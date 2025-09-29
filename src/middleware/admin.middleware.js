@@ -26,7 +26,7 @@ function verifyJWT(req, res, next) {
       role: decoded.role,
     };
     const admin = Admin.findOne({ where: { email: decoded.email } })
-    if (!user) return res.status(404).json({ success: false, message: "admin not found." })
+    if (!admin) return res.status(404).json({ success: false, message: "admin not found." })
 
     next();
   } catch (err) {

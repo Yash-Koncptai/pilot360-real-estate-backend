@@ -10,6 +10,7 @@
 
 * **401 Unauthorized** – authorization token missing or malformed.
 * **403 Forbidden** - invalid or expired token.
+* **404 Not Found** - admin not found.
 
 ---
 ---
@@ -70,6 +71,7 @@ Content-Type: application/json
     "properties": "NUMBER OF PROPERTIES",
     "available": "NUMBER OF AVAILABLE PROPERTIES",
     "views": "TOTAL VIEWS OF PROPERTIES",
+    "inquiries": "TOTAL NUMBER OF INQUIRIES",
     "message": "dashboard details fetched successfully."
 }
 ```
@@ -96,7 +98,12 @@ Content-Type: application/json
 {
     "success": true,
     "property_performance": {
-        "Agricultural": 1
+        "edit type": 1
+    },
+    "monthly_trend": {
+        "This Month": 10,
+        "Last Month": 5,
+        "Growth Rate": "+100%"
     },
     "message": "analytics details fetched successfully."
 }
@@ -343,6 +350,7 @@ Content-Type: application/json
 
 * **401 Unauthorized** – authorization token missing or malformed.
 * **403 Forbidden** - invalid or expired token.
+* **404 Not Found** - user not found.
 
 ---
 ---
@@ -524,7 +532,6 @@ Properties fetching.
 Property fetching.
 
 **Method:** `GET`
-**Request Body:**
 
 **Success Response:**
 
@@ -554,6 +561,48 @@ Property fetching.
 
 **Error Responses:**
 
+* **404 Not Found** – property not found.
+
+---
+---
+
+### `POST /api/user/inquiry?id=<PROPERTY ID>`
+
+Property inquiry.
+
+**Method:** `POST`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+* **Code:** `201 OK`
+
+```json
+{
+    "success": true,
+    "inquiry": {
+        "id": 3,
+        "name": "test",
+        "email": "test@gmail.com",
+        "visit_date": "2025-10-02T00:00:00.000Z",
+        "message": "testing",
+        "property_id": 1,
+        "user_id": 7,
+        "updatedAt": "2025-09-29T12:29:19.207Z",
+        "createdAt": "2025-09-29T12:29:19.207Z"
+    },
+    "message": "inquiry submitted successfully."
+}
+```
+
+**Error Responses:**
+
+* **400 Bad Request** – missing required fields.
 * **404 Not Found** – property not found.
 
 ---
