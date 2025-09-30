@@ -143,6 +143,10 @@ Content-Type: application/json
             "description": "editing description",
             "private": true,
             "features": null,
+            "images": [
+                "uploads/properties/1759230299218-739692831.png",
+                "uploads/properties/1759230299249-703738047.png"
+            ],
             "createdAt": "2025-09-23T11:24:25.527Z",
             "updatedAt": "2025-09-23T11:26:29.755Z"
         }
@@ -157,32 +161,50 @@ Content-Type: application/json
 Property adding.
 
 **Method:** `POST`
-**Request Header:**
+**Request Headers:**
 
 ```http
 Authorization: Bearer <JWT Token>
-Content-Type: application/json
+Content-Type: multipart/form-data
 ```
-**Request Body:**
 
-```json
-{
-  "title": "Farm Land in Rajasthan",
-  "price": 500000,
-  "type": "Agricultural",
-  "size": "10 acres",
-  "location": "Jaipur, Rajasthan",
-  "latitude": 26.9124,
-  "longitude": 75.7873,
-  "description": "Fertile land with canal access.",
-  "privacy": true,
-  "features": ["Well", "Canal", "Fenced"]
-}
-```
+**Request Body (multipart/form-data):**
+
+| Field       | Type    | Description                              | 
+| ----------- | ------- | ---------------------------------------- | 
+| title       | string  | Title of the property                    | 
+| price       | number  | Price of the property                    | 
+| type        | string  | Property type (e.g., Agricultural, etc.) | 
+| size        | string  | Size of the property (e.g., "10 acres")  | 
+| location    | string  | Location address                         | 
+| latitude    | number  | Latitude coordinate                      | 
+| longitude   | number  | Longitude coordinate                     | 
+| description | string  | Description of the property              | 
+| privacy     | boolean | Privacy flag (true or false)             | 
+| features    | string  | Comma-separated list of features         | 
+| images      | file[]  | One or more image files of the property  | 
+
+---
+
+**Example (multipart/form-data body):**
+
+* `title`: Farm Land in Rajasthan
+* `price`: 500000
+* `type`: Agricultural
+* `size`: 10 acres
+* `location`: Jaipur, Rajasthan
+* `latitude`: 26.9124
+* `longitude`: 75.7873
+* `description`: Fertile land with canal access.
+* `privacy`: true
+* `features`: Well, Canal, Fenced
+* `images`: [file1.png, file2.png, ...]
+
+---
 
 **Success Response:**
 
-* **Code:** `201 OK`
+* **Code:** `201 Created`
 
 ```json
 {
@@ -200,6 +222,10 @@ Content-Type: application/json
     "description": "Fertile land with canal access.",
     "private": true,
     "features": ["Well", "Canal", "Fenced"],
+    "images": [
+      "uploads/properties/1759230299218-739692831.png",
+      "uploads/properties/1759230299249-703738047.png"
+    ],
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   }
@@ -208,9 +234,7 @@ Content-Type: application/json
 
 **Error Responses:**
 
-* **400 Bad Request** – missing required fields.
-
----
+* **400 Bad Request** – Missing required fields or invalid file format.
 ---
 
 ### `POST /api/admin/property/update?id=<PROPERTY ID>`
@@ -218,28 +242,50 @@ Content-Type: application/json
 Property updating.
 
 **Method:** `PUT`
-**Request Header:**
+**Request Headers:**
 
 ```http
 Authorization: Bearer <JWT Token>
-Content-Type: application/json
+Content-Type: multipart/form-data
 ```
-**Request Body:**
 
-```json
-{
-  "title": "Farm Land in Rajasthan",
-  "price": 500000,
-  "type": "Agricultural",
-  "size": "10 acres",
-  "location": "Jaipur, Rajasthan",
-  "latitude": 26.9124,
-  "longitude": 75.7873,
-  "description": "Fertile land with canal access.",
-  "privacy": true,
-  "features": ["Well", "Canal", "Fenced"]
-}
-```
+**Request Body (multipart/form-data):**
+
+| Field           | Type    | Description                                |
+| --------------- | ------- | ------------------------------------------ |
+| title           | string  | Title of the property                      |
+| price           | number  | Price of the property                      |
+| type            | string  | Property type (e.g., Agricultural, etc.)   |
+| size            | string  | Size of the property (e.g., "10 acres")    |
+| location        | string  | Location address                           |
+| latitude        | number  | Latitude coordinate                        |
+| longitude       | number  | Longitude coordinate                       |
+| description     | string  | Description of the property                |
+| privacy         | boolean | Privacy flag (true or false)               |
+| features        | string  | Comma-separated list of features           |
+| existingimages  | string  | Comma-separated list of non-deleted images |
+| deletedimages   | string  | Comma-separated list of deleted images     |
+| images          | file[]  | One or more image files of the property    |
+
+---
+
+**Example (multipart/form-data body):**
+
+* `title`: Farm Land in Rajasthan
+* `price`: 500000
+* `type`: Agricultural
+* `size`: 10 acres
+* `location`: Jaipur, Rajasthan
+* `latitude`: 26.9124
+* `longitude`: 75.7873
+* `description`: Fertile land with canal access.
+* `privacy`: true
+* `features`: Well, Canal, Fenced
+* `images`: [file1.png, file2.png, ...]
+* `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+* `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+
+---
 
 **Success Response:**
 
@@ -261,6 +307,10 @@ Content-Type: application/json
     "description": "Fertile land with canal access.",
     "private": true,
     "features": ["Well", "Canal", "Fenced"],
+    "images": [
+      "uploads/properties/1759230299218-739692831.png",
+      "uploads/properties/1759230299249-703738047.png"
+    ],
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   }
@@ -508,18 +558,22 @@ Properties fetching.
   "properties": [
         {
             "id": 1,
-            "title": "editing land",
-            "price": 67,
-            "type": "edit type",
-            "size": "56 sqft",
-            "location": "kolkata",
-            "latitude": 8.3,
-            "longitude": 6.34,
-            "description": "editing description",
+            "title": "Farm Land in Rajasthan",
+            "price": 500000,
+            "type": "Agricultural",
+            "size": "10 acres",
+            "location": "Jaipur, Rajasthan",
+            "latitude": 26.9124,
+            "longitude": 75.7873,
+            "description": "Fertile land with canal access.",
             "private": true,
-            "features": null,
-            "createdAt": "2025-09-23T11:24:25.527Z",
-            "updatedAt": "2025-09-23T11:26:29.755Z"
+            "features": ["Well", "Canal", "Fenced"],
+            "images": [
+              "uploads/properties/1759230299218-739692831.png",
+              "uploads/properties/1759230299249-703738047.png"
+            ],
+            "updatedAt": "2025-09-22T13:20:52.081Z",
+            "createdAt": "2025-09-22T13:20:52.081Z"
         }
     ],
 }
@@ -552,6 +606,10 @@ Property fetching.
     "description": "Fertile land with canal access.",
     "private": true,
     "features": ["Well", "Canal", "Fenced"],
+    "images": [
+      "uploads/properties/1759230299218-739692831.png",
+      "uploads/properties/1759230299249-703738047.png"
+    ],
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   },
