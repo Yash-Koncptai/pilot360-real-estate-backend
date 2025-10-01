@@ -438,7 +438,7 @@ User signup.
 
 **Success Response:**
 
-- **Code:** `201 OK`
+- **Code:** `201 Created`
 
 ```json
 {
@@ -660,7 +660,7 @@ Content-Type: application/json
 
 **Success Response:**
 
-- **Code:** `201 OK`
+- **Code:** `201 Created`
 
 ```json
 {
@@ -707,7 +707,7 @@ Contact us.
 
 **Success Response:**
 
-- **Code:** `201 OK`
+- **Code:** `201 Created`
 
 ```json
 {
@@ -721,6 +721,59 @@ Contact us.
     "createdAt": "2025-10-01T12:00:00.000Z"
   },
   "message": "contact submitted successfully."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – missing required fields.
+
+---
+
+---
+
+### `POST /api/user/preferences`
+
+User preferences save/update.
+
+**Method:** `POST`
+
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "primary_purpose": "Personal Use",
+  "budget": 200000,
+  "land_interests": "Agricultural, Residential",
+  "preferred_location": "Udaipur"
+}
+```
+
+**Success Response:**
+
+- **Code:** `201 Created`
+
+```json
+{
+  "success": true,
+  "preference": {
+    "id": 1,
+    "user_id": 7,
+    "primary_purpose": "Investment",
+    "budget": 350000,
+    "land_interests": ["Agricultural", "Residential"],
+    "preferred_location": "Jaipur",
+    "updatedAt": "2025-10-01T12:00:00.000Z",
+    "createdAt": "2025-10-01T12:00:00.000Z"
+  },
+  "message": "preferences saved successfully."
 }
 ```
 
