@@ -19,5 +19,5 @@ function generateJWT(email, role) {
 }
 
 module.exports = {
-  generateJWT
+  generateJWT,
 };

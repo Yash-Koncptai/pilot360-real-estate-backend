@@ -8,11 +8,12 @@
 
 **Error Responses:**
 
-* **401 Unauthorized** – authorization token missing or malformed.
-* **403 Forbidden** - invalid or expired token.
-* **404 Not Found** - admin not found.
+- **401 Unauthorized** – authorization token missing or malformed.
+- **403 Forbidden** - invalid or expired token.
+- **404 Not Found** - admin not found.
 
 ---
+
 ---
 
 ### `POST /api/admin/login`
@@ -25,13 +26,13 @@ Admin login.
 ```json
 {
   "username": "admin00",
-  "password": "admin00",
+  "password": "admin00"
 }
 ```
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
@@ -43,10 +44,11 @@ Admin login.
 
 **Error Responses:**
 
-* **400 Bad Request** – invalid credentials.
-* **400 Bad Request** – missing required fields.
+- **400 Bad Request** – invalid credentials.
+- **400 Bad Request** – missing required fields.
 
 ---
+
 ---
 
 ### `GET /api/admin/dashboard`
@@ -63,19 +65,21 @@ Content-Type: application/json
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
-    "success": true,
-    "properties": "NUMBER OF PROPERTIES",
-    "available": "NUMBER OF AVAILABLE PROPERTIES",
-    "views": "TOTAL VIEWS OF PROPERTIES",
-    "inquiries": "TOTAL NUMBER OF INQUIRIES",
-    "message": "dashboard details fetched successfully."
+  "success": true,
+  "properties": "NUMBER OF PROPERTIES",
+  "available": "NUMBER OF AVAILABLE PROPERTIES",
+  "views": "TOTAL VIEWS OF PROPERTIES",
+  "inquiries": "TOTAL NUMBER OF INQUIRIES",
+  "message": "dashboard details fetched successfully."
 }
 ```
+
 ---
+
 ---
 
 ### `GET /api/admin/analytics`
@@ -92,23 +96,25 @@ Content-Type: application/json
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
-    "success": true,
-    "property_performance": {
-        "edit type": 1
-    },
-    "monthly_trend": {
-        "This Month": 10,
-        "Last Month": 5,
-        "Growth Rate": "+100%"
-    },
-    "message": "analytics details fetched successfully."
+  "success": true,
+  "property_performance": {
+    "edit type": 1
+  },
+  "monthly_trend": {
+    "This Month": 10,
+    "Last Month": 5,
+    "Growth Rate": "+100%"
+  },
+  "message": "analytics details fetched successfully."
 }
 ```
+
 ---
+
 ---
 
 ### `GET /api/admin/property`
@@ -122,38 +128,41 @@ Properties fetching.
 Authorization: Bearer <JWT Token>
 Content-Type: application/json
 ```
+
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
   "success": true,
   "message": "properties fetched successfully.",
   "properties": [
-        {
-            "id": 1,
-            "title": "editing land",
-            "price": 67,
-            "type": "edit type",
-            "size": "56 sqft",
-            "location": "kolkata",
-            "latitude": 8.3,
-            "longitude": 6.34,
-            "description": "editing description",
-            "private": true,
-            "features": null,
-            "images": [
-                "uploads/properties/1759230299218-739692831.png",
-                "uploads/properties/1759230299249-703738047.png"
-            ],
-            "createdAt": "2025-09-23T11:24:25.527Z",
-            "updatedAt": "2025-09-23T11:26:29.755Z"
-        }
-    ],
+    {
+      "id": 1,
+      "title": "editing land",
+      "price": 67,
+      "type": "edit type",
+      "size": "56 sqft",
+      "location": "kolkata",
+      "latitude": 8.3,
+      "longitude": 6.34,
+      "description": "editing description",
+      "private": true,
+      "features": null,
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "createdAt": "2025-09-23T11:24:25.527Z",
+      "updatedAt": "2025-09-23T11:26:29.755Z"
+    }
+  ]
 }
 ```
+
 ---
+
 ---
 
 ### `POST /api/admin/property/add`
@@ -170,41 +179,41 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field       | Type    | Description                              | 
-| ----------- | ------- | ---------------------------------------- | 
-| title       | string  | Title of the property                    | 
-| price       | number  | Price of the property                    | 
-| type        | string  | Property type (e.g., Agricultural, etc.) | 
-| size        | string  | Size of the property (e.g., "10 acres")  | 
-| location    | string  | Location address                         | 
-| latitude    | number  | Latitude coordinate                      | 
-| longitude   | number  | Longitude coordinate                     | 
-| description | string  | Description of the property              | 
-| privacy     | boolean | Privacy flag (true or false)             | 
-| features    | string  | Comma-separated list of features         | 
-| images      | file[]  | One or more image files of the property  | 
+| Field       | Type    | Description                              |
+| ----------- | ------- | ---------------------------------------- |
+| title       | string  | Title of the property                    |
+| price       | number  | Price of the property                    |
+| type        | string  | Property type (e.g., Agricultural, etc.) |
+| size        | string  | Size of the property (e.g., "10 acres")  |
+| location    | string  | Location address                         |
+| latitude    | number  | Latitude coordinate                      |
+| longitude   | number  | Longitude coordinate                     |
+| description | string  | Description of the property              |
+| privacy     | boolean | Privacy flag (true or false)             |
+| features    | string  | Comma-separated list of features         |
+| images      | file[]  | One or more image files of the property  |
 
 ---
 
 **Example (multipart/form-data body):**
 
-* `title`: Farm Land in Rajasthan
-* `price`: 500000
-* `type`: Agricultural
-* `size`: 10 acres
-* `location`: Jaipur, Rajasthan
-* `latitude`: 26.9124
-* `longitude`: 75.7873
-* `description`: Fertile land with canal access.
-* `privacy`: true
-* `features`: Well, Canal, Fenced
-* `images`: [file1.png, file2.png, ...]
+- `title`: Farm Land in Rajasthan
+- `price`: 500000
+- `type`: Agricultural
+- `size`: 10 acres
+- `location`: Jaipur, Rajasthan
+- `latitude`: 26.9124
+- `longitude`: 75.7873
+- `description`: Fertile land with canal access.
+- `privacy`: true
+- `features`: Well, Canal, Fenced
+- `images`: [file1.png, file2.png, ...]
 
 ---
 
 **Success Response:**
 
-* **Code:** `201 Created`
+- **Code:** `201 Created`
 
 ```json
 {
@@ -234,7 +243,8 @@ Content-Type: multipart/form-data
 
 **Error Responses:**
 
-* **400 Bad Request** – Missing required fields or invalid file format.
+- **400 Bad Request** – Missing required fields or invalid file format.
+
 ---
 
 ### `POST /api/admin/property/update?id=<PROPERTY ID>`
@@ -251,45 +261,45 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field           | Type    | Description                                |
-| --------------- | ------- | ------------------------------------------ |
-| title           | string  | Title of the property                      |
-| price           | number  | Price of the property                      |
-| type            | string  | Property type (e.g., Agricultural, etc.)   |
-| size            | string  | Size of the property (e.g., "10 acres")    |
-| location        | string  | Location address                           |
-| latitude        | number  | Latitude coordinate                        |
-| longitude       | number  | Longitude coordinate                       |
-| description     | string  | Description of the property                |
-| privacy         | boolean | Privacy flag (true or false)               |
-| features        | string  | Comma-separated list of features           |
-| existingimages  | string  | Comma-separated list of non-deleted images |
-| deletedimages   | string  | Comma-separated list of deleted images     |
-| images          | file[]  | One or more image files of the property    |
+| Field          | Type    | Description                                |
+| -------------- | ------- | ------------------------------------------ |
+| title          | string  | Title of the property                      |
+| price          | number  | Price of the property                      |
+| type           | string  | Property type (e.g., Agricultural, etc.)   |
+| size           | string  | Size of the property (e.g., "10 acres")    |
+| location       | string  | Location address                           |
+| latitude       | number  | Latitude coordinate                        |
+| longitude      | number  | Longitude coordinate                       |
+| description    | string  | Description of the property                |
+| privacy        | boolean | Privacy flag (true or false)               |
+| features       | string  | Comma-separated list of features           |
+| existingimages | string  | Comma-separated list of non-deleted images |
+| deletedimages  | string  | Comma-separated list of deleted images     |
+| images         | file[]  | One or more image files of the property    |
 
 ---
 
 **Example (multipart/form-data body):**
 
-* `title`: Farm Land in Rajasthan
-* `price`: 500000
-* `type`: Agricultural
-* `size`: 10 acres
-* `location`: Jaipur, Rajasthan
-* `latitude`: 26.9124
-* `longitude`: 75.7873
-* `description`: Fertile land with canal access.
-* `privacy`: true
-* `features`: Well, Canal, Fenced
-* `images`: [file1.png, file2.png, ...]
-* `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
-* `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `title`: Farm Land in Rajasthan
+- `price`: 500000
+- `type`: Agricultural
+- `size`: 10 acres
+- `location`: Jaipur, Rajasthan
+- `latitude`: 26.9124
+- `longitude`: 75.7873
+- `description`: Fertile land with canal access.
+- `privacy`: true
+- `features`: Well, Canal, Fenced
+- `images`: [file1.png, file2.png, ...]
+- `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
 
 ---
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
@@ -319,10 +329,11 @@ Content-Type: multipart/form-data
 
 **Error Responses:**
 
-* **400 Bad Request** – missing required fields.
-* **404 Not Found** – property not found.
+- **400 Bad Request** – missing required fields.
+- **404 Not Found** – property not found.
 
 ---
+
 ---
 
 ### `DELETE /api/admin/property/delete?id=<PROPERTY ID>`
@@ -336,9 +347,10 @@ Property deleting.
 Authorization: Bearer <JWT Token>
 Content-Type: application/json
 ```
+
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
@@ -349,9 +361,10 @@ Content-Type: application/json
 
 **Error Responses:**
 
-* **404 Not Found** – property not found.
+- **404 Not Found** – property not found.
 
 ---
+
 ---
 
 ### `GET /api/admin/users`
@@ -368,26 +381,27 @@ Content-Type: application/json
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
   "success": true,
   "users": [
-      {
-          "id": 7,
-          "name": "test",
-          "mobile": "9090909090",
-          "email": "test@gmail.com",
-          "password": "$2b$10$58jGQ1WczemFYacDrPoqduWzjI2Ps3zTNHKgcCPz.1uQN4nZMAArG",
-          "verification": true,
-          "createdAt": "2025-09-25T11:32:33.632Z",
-          "updatedAt": "2025-09-25T11:32:58.997Z"
-      }
+    {
+      "id": 7,
+      "name": "test",
+      "mobile": "9090909090",
+      "email": "test@gmail.com",
+      "password": "$2b$10$58jGQ1WczemFYacDrPoqduWzjI2Ps3zTNHKgcCPz.1uQN4nZMAArG",
+      "verification": true,
+      "createdAt": "2025-09-25T11:32:33.632Z",
+      "updatedAt": "2025-09-25T11:32:58.997Z"
+    }
   ],
   "message": "users fetch successfully."
 }
 ```
+
 ---
 
 ## 📘 User API Endpoints
@@ -398,11 +412,12 @@ Content-Type: application/json
 
 **Error Responses:**
 
-* **401 Unauthorized** – authorization token missing or malformed.
-* **403 Forbidden** - invalid or expired token.
-* **404 Not Found** - user not found.
+- **401 Unauthorized** – authorization token missing or malformed.
+- **403 Forbidden** - invalid or expired token.
+- **404 Not Found** - user not found.
 
 ---
+
 ---
 
 ### `POST /api/user/signup`
@@ -416,29 +431,30 @@ User signup.
 {
   "name": "myname",
   "email": "myemail@gmail.com",
-  "mobile": "9876543210", 
-  "password": "mypassword",
+  "mobile": "9876543210",
+  "password": "mypassword"
 }
 ```
 
 **Success Response:**
 
-* **Code:** `201 OK`
+- **Code:** `201 OK`
 
 ```json
 {
-    "success": true,
-    "otp": "OTP",
-    "message": "user created successfully."
+  "success": true,
+  "otp": "OTP",
+  "message": "user created successfully."
 }
 ```
 
 **Error Responses:**
 
-* **400 Bad Request** – missing required fields.
-* **409 Conflict** - user already exists.
+- **400 Bad Request** – missing required fields.
+- **409 Conflict** - user already exists.
 
 ---
+
 ---
 
 ### `POST /api/user/otp/verify`
@@ -451,27 +467,28 @@ User otp verification.
 ```json
 {
   "email": "myemail@gmail.com",
-  "otp": "OTP", 
+  "otp": "OTP"
 }
 ```
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
-    "success": true,
-    "message": "email and mobile verified successfully."
+  "success": true,
+  "message": "email and mobile verified successfully."
 }
 ```
 
 **Error Responses:**
 
-* **400 Bad Request** – OTP expired or invalid.
-* **404 Not Found** – user not found.
+- **400 Bad Request** – OTP expired or invalid.
+- **404 Not Found** – user not found.
 
 ---
+
 ---
 
 ### `POST /api/user/otp`
@@ -483,27 +500,28 @@ Otp resend.
 
 ```json
 {
-  "email": "myemail@gmail.com", 
+  "email": "myemail@gmail.com"
 }
 ```
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
-    "success": true,
-    "otp": "296068",
-    "message": "OTP send successfully."
+  "success": true,
+  "otp": "296068",
+  "message": "OTP send successfully."
 }
 ```
 
 **Error Responses:**
 
-* **404 Not Found** – user not found.
+- **404 Not Found** – user not found.
 
 ---
+
 ---
 
 ### `POST /api/user/login`
@@ -522,7 +540,7 @@ User login.
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
@@ -534,11 +552,12 @@ User login.
 
 **Error Responses:**
 
-* **400 Bad Request** – missing required fields.
-* **400 Bad Request** – invalid credentials.
-* **403 Forbidden** – email and mobile number not verified.
+- **400 Bad Request** – missing required fields.
+- **400 Bad Request** – invalid credentials.
+- **403 Forbidden** – email and mobile number not verified.
 
 ---
+
 ---
 
 ### `GET /api/user/properties`
@@ -549,36 +568,38 @@ Properties fetching.
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
   "success": true,
   "message": "properties fetched successfully.",
   "properties": [
-        {
-            "id": 1,
-            "title": "Farm Land in Rajasthan",
-            "price": 500000,
-            "type": "Agricultural",
-            "size": "10 acres",
-            "location": "Jaipur, Rajasthan",
-            "latitude": 26.9124,
-            "longitude": 75.7873,
-            "description": "Fertile land with canal access.",
-            "private": true,
-            "features": ["Well", "Canal", "Fenced"],
-            "images": [
-              "uploads/properties/1759230299218-739692831.png",
-              "uploads/properties/1759230299249-703738047.png"
-            ],
-            "updatedAt": "2025-09-22T13:20:52.081Z",
-            "createdAt": "2025-09-22T13:20:52.081Z"
-        }
-    ],
+    {
+      "id": 1,
+      "title": "Farm Land in Rajasthan",
+      "price": 500000,
+      "type": "Agricultural",
+      "size": "10 acres",
+      "location": "Jaipur, Rajasthan",
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "description": "Fertile land with canal access.",
+      "private": true,
+      "features": ["Well", "Canal", "Fenced"],
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
+    }
+  ]
 }
 ```
+
 ---
+
 ---
 
 ### `GET /api/user/property?id=<PROPERTY ID>`
@@ -589,7 +610,7 @@ Property fetching.
 
 **Success Response:**
 
-* **Code:** `200 OK`
+- **Code:** `200 OK`
 
 ```json
 {
@@ -619,9 +640,10 @@ Property fetching.
 
 **Error Responses:**
 
-* **404 Not Found** – property not found.
+- **404 Not Found** – property not found.
 
 ---
+
 ---
 
 ### `POST /api/user/inquiry?id=<PROPERTY ID>`
@@ -638,29 +660,29 @@ Content-Type: application/json
 
 **Success Response:**
 
-* **Code:** `201 OK`
+- **Code:** `201 OK`
 
 ```json
 {
-    "success": true,
-    "inquiry": {
-        "id": 3,
-        "name": "test",
-        "email": "test@gmail.com",
-        "visit_date": "2025-10-02T00:00:00.000Z",
-        "message": "testing",
-        "property_id": 1,
-        "user_id": 7,
-        "updatedAt": "2025-09-29T12:29:19.207Z",
-        "createdAt": "2025-09-29T12:29:19.207Z"
-    },
-    "message": "inquiry submitted successfully."
+  "success": true,
+  "inquiry": {
+    "id": 3,
+    "name": "test",
+    "email": "test@gmail.com",
+    "visit_date": "2025-10-02T00:00:00.000Z",
+    "message": "testing",
+    "property_id": 1,
+    "user_id": 7,
+    "updatedAt": "2025-09-29T12:29:19.207Z",
+    "createdAt": "2025-09-29T12:29:19.207Z"
+  },
+  "message": "inquiry submitted successfully."
 }
 ```
 
 **Error Responses:**
 
-* **400 Bad Request** – missing required fields.
-* **404 Not Found** – property not found.
+- **400 Bad Request** – missing required fields.
+- **404 Not Found** – property not found.
 
 ---

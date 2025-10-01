@@ -1,5 +1,5 @@
-const { Sequelize } = require("sequelize")
-const bcrypt = require("bcryptjs")
+const { Sequelize } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -10,6 +10,6 @@ const sequelize = new Sequelize(
     dialect: "postgres",
     logging: false,
   }
-)
+);
 
-module.exports = sequelize
+module.exports = sequelize;

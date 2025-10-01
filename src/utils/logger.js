@@ -1,9 +1,9 @@
-const chalk = require('chalk');
+const chalk = require("chalk");
 
 function requestLogger(req, res, next) {
   const start = Date.now();
 
-  res.on('finish', () => {
+  res.on("finish", () => {
     const duration = Date.now() - start;
 
     const method = chalk.bold.blue(req.method.toUpperCase());
@@ -19,13 +19,9 @@ function requestLogger(req, res, next) {
 
     const status = statusColor(res.statusCode);
 
-    console.log(
-      '\n' + chalk.gray('='.repeat(60))
-    );
+    console.log("\n" + chalk.gray("=".repeat(60)));
     console.log(`🔹 ${method} ${url} ${status} - ${time}`);
-    console.log(
-      chalk.gray('='.repeat(60)) + '\n'
-    );
+    console.log(chalk.gray("=".repeat(60)) + "\n");
   });
 
   next();
