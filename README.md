@@ -766,10 +766,10 @@ Content-Type: application/json
   "preference": {
     "id": 1,
     "user_id": 7,
-    "primary_purpose": "Investment",
-    "budget": 350000,
+    "primary_purpose": "Personal Use",
+    "budget": 200000,
     "land_interests": ["Agricultural", "Residential"],
-    "preferred_location": "Jaipur",
+    "preferred_location": "Udaipur",
     "updatedAt": "2025-10-01T12:00:00.000Z",
     "createdAt": "2025-10-01T12:00:00.000Z"
   },
