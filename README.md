@@ -560,9 +560,9 @@ User login.
 
 ---
 
-### `GET /api/user/properties`
+### `GET /api/user/properties?type=<TYPE>&min=<MIN_PRICE>&max=<MAX_PRICE>&location=<LOCATION>`
 
-Properties fetching.
+Properties fetching with optional filtering (Remove all params to fetch all properties).
 
 **Method:** `GET`
 

@@ -1,20 +1,7 @@
 const Property = require("../../model/admin/property.model");
+const { Op } = require("sequelize");
 
 class PropertyController {
-  async propertiesfetch(req, res, next) {
-    try {
-      const properties = await Property.findAll();
-
-      res.status(200).json({
-        success: true,
-        properties: properties,
-        message: "properties fetched successfully.",
-      });
-    } catch (err) {
-      next(err);
-    }
-  }
-
   async propertyfetch(req, res, next) {
     try {
       const query = req.query;
@@ -38,9 +25,34 @@ class PropertyController {
     }
   }
 
-  async propertiesfilter(req, res, next) {
+  async propertiesfetch(req, res, next) {
     try {
-      const { type, min, max, location } = req.body;
+      const { type, min, max, location } = req.query;
+
+      const where = {};
+
+      if (type) {
+        where.type = type;
+      }
+
+      if (min || max) {
+        where.price = {};
+        if (min) where.price[Op.gte] = Number(min);
+        if (max) where.price[Op.lte] = Number(max);
+      }
+
+      if (location) {
+        const pattern = `%${location}%`;
+        where.location = { [Op.iLike]: pattern };
+      }
+
+      const properties = await Property.findAll({ where });
+
+      return res.status(200).json({
+        success: true,
+        properties: properties,
+        message: "properties fetched successfully.",
+      });
     } catch (err) {
       next(err);
     }
