@@ -18,7 +18,11 @@ const Preference = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    budget: {
+    budget_min: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    budget_max: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

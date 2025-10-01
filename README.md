@@ -750,7 +750,8 @@ Content-Type: application/json
 ```json
 {
   "primary_purpose": "Personal Use",
-  "budget": 200000,
+  "budget_min": 5000000,
+  "budget_max": 10000000,
   "land_interests": "Agricultural, Residential",
   "preferred_location": "Udaipur"
 }
@@ -767,7 +768,8 @@ Content-Type: application/json
     "id": 1,
     "user_id": 7,
     "primary_purpose": "Personal Use",
-    "budget": 200000,
+    "budget_min": 5000000,
+    "budget_max": 10000000,
     "land_interests": ["Agricultural", "Residential"],
     "preferred_location": "Udaipur",
     "updatedAt": "2025-10-01T12:00:00.000Z",

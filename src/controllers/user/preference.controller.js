@@ -5,18 +5,38 @@ class PreferenceController {
   async save(req, res, next) {
     try {
       const { email } = req.user;
-      const { primary_purpose, budget, land_interests, preferred_location } =
-        req.body;
+      const {
+        primary_purpose,
+        budget_min,
+        budget_max,
+        land_interests,
+        preferred_location,
+      } = req.body;
 
       if (
         !primary_purpose ||
-        !budget ||
+        !budget_min ||
+        !budget_max ||
         !land_interests ||
         !preferred_location
       ) {
         return res
           .status(400)
           .json({ success: false, message: "missing required fields." });
+      }
+
+      const minValue = Number(budget_min);
+      const maxValue = Number(budget_max);
+      if (
+        Number.isNaN(minValue) ||
+        Number.isNaN(maxValue) ||
+        minValue < 0 ||
+        maxValue < 0 ||
+        minValue > maxValue
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, message: "invalid budget range." });
       }
 
       const user = await User.findOne({ where: { email: email } });
@@ -32,7 +52,8 @@ class PreferenceController {
 
       if (preference) {
         preference.primary_purpose = primary_purpose;
-        preference.budget = Number(budget);
+        preference.budget_min = minValue;
+        preference.budget_max = maxValue;
         preference.land_interests = interestsArray;
         preference.preferred_location = preferred_location;
 
@@ -41,7 +62,8 @@ class PreferenceController {
         preference = await Preference.create({
           user_id: user.id,
           primary_purpose: primary_purpose,
-          budget: Number(budget),
+          budget_min: minValue,
+          budget_max: maxValue,
           land_interests: interestsArray,
           preferred_location: preferred_location,
         });
