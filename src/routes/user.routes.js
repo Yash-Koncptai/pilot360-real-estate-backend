@@ -18,5 +18,6 @@ router.get("/property", propertyController.propertyfetch);
 
 // Inquiry
 router.post("/inquiry", auth, inquiryController.productinquiry);
+router.post("/contact", inquiryController.contactus);
 
 module.exports = router;

@@ -29,7 +29,7 @@ router.delete("/property/delete", auth, propertyController.deleteproperty);
 
 // Dashboard
 router.get("/dashboard", auth, dashboardController.dashboard);
-router.get("/analytics", dashboardController.analytics);
+router.get("/analytics", auth, dashboardController.analytics);
 
 // Users
 router.get("/users", auth, userController.usersfetching);

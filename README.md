@@ -686,3 +686,46 @@ Content-Type: application/json
 - **404 Not Found** – property not found.
 
 ---
+
+---
+
+### `POST /api/user/contact`
+
+Contact us.
+
+**Method:** `POST`
+
+**Request Body:**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "I'd like to know more about your services."
+}
+```
+
+**Success Response:**
+
+- **Code:** `201 OK`
+
+```json
+{
+  "success": true,
+  "contact": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "message": "I'd like to know more about your services.",
+    "updatedAt": "2025-10-01T12:00:00.000Z",
+    "createdAt": "2025-10-01T12:00:00.000Z"
+  },
+  "message": "contact submitted successfully."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – missing required fields.
+
+---
