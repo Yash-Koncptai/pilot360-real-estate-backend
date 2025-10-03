@@ -732,6 +732,60 @@ Contact us.
 
 ---
 
+### `GET /api/user/recommendations`
+
+Get personalized property recommendations based on user preferences.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "properties": [
+    {
+      "id": 1,
+      "title": "Farm Land in Rajasthan",
+      "price": 500000,
+      "type": "Agricultural",
+      "size": "10 acres",
+      "location": "Jaipur, Rajasthan",
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "description": "Fertile land with canal access.",
+      "private": true,
+      "features": ["Well", "Canal", "Fenced"],
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "views": 15,
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
+    }
+  ],
+  "message": "recommended properties fetched successfully.",
+  "locked": false
+}
+```
+
+**Error Responses:**
+
+- **403 Forbidden** – please set your preferences first.
+
+---
+
+---
+
 ### `POST /api/user/preferences`
 
 User preferences save/update.

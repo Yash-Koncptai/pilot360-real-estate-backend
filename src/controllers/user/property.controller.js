@@ -1,4 +1,5 @@
 const Property = require("../../model/admin/property.model");
+const Preference = require("../../model/user/preference.model");
 const { Op } = require("sequelize");
 
 class PropertyController {
@@ -52,6 +53,68 @@ class PropertyController {
         success: true,
         properties: properties,
         message: "properties fetched successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getRecommendations(req, res, next) {
+    try {
+      const userId = req.user.id;
+
+      const userPreference = await Preference.findOne({
+        where: { user_id: userId },
+      });
+
+      if (!userPreference) {
+        return res.status(403).json({
+          success: false,
+          message: "please set your preferences first.",
+          locked: true,
+        });
+      }
+
+      const where = {};
+
+      if (userPreference.primary_purpose) {
+        where.type = userPreference.primary_purpose;
+      }
+
+      if (userPreference.budget_min || userPreference.budget_max) {
+        where.price = {};
+        if (userPreference.budget_min) {
+          where.price[Op.gte] = userPreference.budget_min;
+        }
+        if (userPreference.budget_max) {
+          where.price[Op.lte] = userPreference.budget_max;
+        }
+      }
+
+      if (userPreference.preferred_location) {
+        const pattern = `%${userPreference.preferred_location}%`;
+        where.location = { [Op.iLike]: pattern };
+      }
+
+      if (
+        userPreference.land_interests &&
+        userPreference.land_interests.length > 0
+      ) {
+        where.features = {
+          [Op.overlap]: userPreference.land_interests,
+        };
+      }
+
+      const recommendedProperties = await Property.findAll({
+        where,
+        order: [["views", "DESC"]],
+      });
+
+      return res.status(200).json({
+        success: true,
+        properties: recommendedProperties,
+        message: "recommended properties fetched successfully.",
+        locked: false,
       });
     } catch (err) {
       next(err);

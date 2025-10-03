@@ -16,6 +16,7 @@ router.post("/login", userController.login);
 // Property
 router.get("/properties", propertyController.propertiesfetch);
 router.get("/property", propertyController.propertyfetch);
+router.get("/recommendations", auth, propertyController.getRecommendations);
 
 // Inquiry
 router.post("/inquiry", auth, inquiryController.productinquiry);
