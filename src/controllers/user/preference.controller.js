@@ -46,6 +46,11 @@ class PreferenceController {
         interestsArray = land_interests.split(",").map((i) => i.trim());
       }
 
+      let locationArray = [];
+      if (typeof preferred_location === "string") {
+        locationArray = preferred_location.split(",").map((i) => i.trim());
+      }
+
       let preference = await Preference.findOne({
         where: { user_id: user.id },
       });
@@ -55,7 +60,7 @@ class PreferenceController {
         preference.budget_min = minValue;
         preference.budget_max = maxValue;
         preference.land_interests = interestsArray;
-        preference.preferred_location = preferred_location;
+        preference.preferred_location = locationArray;
 
         await preference.save();
       } else {

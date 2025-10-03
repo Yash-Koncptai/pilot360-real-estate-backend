@@ -77,7 +77,13 @@ class PropertyController {
 
       const where = {};
 
-      if (userPreference.primary_purpose) {
+      if (
+        userPreference.land_interests &&
+        Array.isArray(userPreference.land_interests) &&
+        userPreference.land_interests.length > 0
+      ) {
+        where.type = { [Op.in]: userPreference.land_interests };
+      } else if (userPreference.primary_purpose) {
         where.type = userPreference.primary_purpose;
       }
 
@@ -91,23 +97,22 @@ class PropertyController {
         }
       }
 
-      if (userPreference.preferred_location) {
+      if (
+        userPreference.preferred_location &&
+        Array.isArray(userPreference.preferred_location) &&
+        userPreference.preferred_location.length > 0
+      ) {
+        const patterns = userPreference.preferred_location.map(
+          (loc) => `%${loc}%`
+        );
+        where.location = { [Op.iLike]: { [Op.any]: patterns } };
+      } else if (userPreference.preferred_location) {
         const pattern = `%${userPreference.preferred_location}%`;
         where.location = { [Op.iLike]: pattern };
       }
 
-      if (
-        userPreference.land_interests &&
-        userPreference.land_interests.length > 0
-      ) {
-        where.features = {
-          [Op.overlap]: userPreference.land_interests,
-        };
-      }
-
       const recommendedProperties = await Property.findAll({
         where,
-        order: [["views", "DESC"]],
       });
 
       return res.status(200).json({
