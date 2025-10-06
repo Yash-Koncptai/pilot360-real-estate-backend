@@ -1,5 +1,6 @@
 const Property = require("../../model/admin/property.model");
 const Preference = require("../../model/user/preference.model");
+const User = require("../../model/user/user.model");
 const { Op } = require("sequelize");
 
 class PropertyController {
@@ -61,10 +62,11 @@ class PropertyController {
 
   async getRecommendations(req, res, next) {
     try {
-      const userId = req.user.id;
+      const userEmail = req.user.email;
+      const user = await User.findOne({ where: { email: userEmail } });
 
       const userPreference = await Preference.findOne({
-        where: { user_id: userId },
+        where: { user_id: user.id },
       });
 
       if (!userPreference) {
