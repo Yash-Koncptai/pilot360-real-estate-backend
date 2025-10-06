@@ -63,6 +63,7 @@ class PropertyController {
   async getRecommendations(req, res, next) {
     try {
       const userEmail = req.user.email;
+      console.log("userEmail ", userEmail);
       const user = await User.findOne({ where: { email: userEmail } });
 
       const userPreference = await Preference.findOne({
