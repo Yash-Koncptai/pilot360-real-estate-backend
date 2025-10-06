@@ -26,16 +26,17 @@ function verifyJWT(req, res, next) {
         .json({ success: false, message: "invalid or expired token." });
     }
 
-    req.user = {
-      email: decoded.email,
-      role: decoded.role,
-    };
-
     const user = User.findOne({ where: { email: decoded.email } });
     if (!user)
       return res
         .status(404)
         .json({ success: false, message: "user not found." });
+
+    req.user = {
+      email: user.email,
+      role: user.role,
+      id: user.id,
+    };
 
     next();
   } catch (err) {
