@@ -6,7 +6,7 @@ if (!SECRET_KEY) {
   throw new Error("SECRET_KEY is not set in environment variables.");
 }
 
-function verifyJWT(req, res, next) {
+async function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -20,21 +20,22 @@ function verifyJWT(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    if (decoded.role != "user") {
+    if (decoded.role !== "user") {
       return res
         .status(403)
         .json({ success: false, message: "invalid or expired token." });
     }
 
-    const user = User.findOne({ where: { email: decoded.email } });
-    if (!user)
+    const user = await User.findOne({ where: { email: decoded.email } });
+    if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "user not found." });
+    }
 
     req.user = {
       email: user.email,
-      role: user.role,
+      role: decoded.role,
       id: user.id,
     };
 
