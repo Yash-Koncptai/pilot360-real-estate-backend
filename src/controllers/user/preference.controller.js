@@ -41,14 +41,29 @@ class PreferenceController {
 
       const user = await User.findOne({ where: { email: email } });
 
-      let interestsArray = [];
-      if (typeof land_interests === "string") {
-        interestsArray = land_interests.split(",").map((i) => i.trim());
-      }
+      // Normalize inputs to string arrays as required by DataTypes.ARRAY(DataTypes.STRING)
+      const normalizeToStringArray = (value) => {
+        if (Array.isArray(value)) {
+          return value.map((v) => String(v).trim()).filter((v) => v.length > 0);
+        }
+        if (typeof value === "string") {
+          return value
+            .split(",")
+            .map((v) => v.trim())
+            .filter((v) => v.length > 0);
+        }
+        return [];
+      };
 
-      let locationArray = [];
-      if (typeof preferred_location === "string") {
-        locationArray = preferred_location.split(",").map((i) => i.trim());
+      const interestsArray = normalizeToStringArray(land_interests);
+      const locationArray = normalizeToStringArray(preferred_location);
+
+      if (interestsArray.length === 0 || locationArray.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "land_interests and preferred_location must be non-empty arrays or comma-separated strings.",
+        });
       }
 
       let preference = await Preference.findOne({
@@ -70,7 +85,7 @@ class PreferenceController {
           budget_min: minValue,
           budget_max: maxValue,
           land_interests: interestsArray,
-          preferred_location: preferred_location,
+          preferred_location: locationArray,
         });
       }
 
