@@ -1,6 +1,6 @@
 const Suggestion = require("../../model/admin/suggestion.model");
 const Property = require("../../model/admin/property.model");
-const User = require("../../model/admin/user.model");
+const User = require("../../model/user/user.model");
 
 class SuggestionController {
   async suggestproperty(req, res, next) {
