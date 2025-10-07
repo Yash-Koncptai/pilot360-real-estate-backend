@@ -102,7 +102,9 @@ Content-Type: application/json
 {
   "success": true,
   "property_performance": {
-    "edit type": 1
+    "Agricultural": 5,
+    "Residential": 3,
+    "Commercial": 2
   },
   "monthly_trend": {
     "This Month": 10,
@@ -425,6 +427,48 @@ Content-Type: application/json
 
 ---
 
+---
+
+### `POST /api/admin/suggestions`
+
+Property suggestion.
+
+**Method:** `POST`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "user_id": 7,
+  "property_id": 1
+}
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "property suggested successfully."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – missing required fields.
+- **404 Not Found** – user not found.
+- **404 Not Found** – property not found.
+
+---
+
 ## 📘 User API Endpoints
 
 ---
@@ -554,10 +598,12 @@ User login.
 
 ```json
 {
-  "identifier": "9876543210",  email or mobile number
-  "password": "mypassword",
+  "identifier": "9876543210",
+  "password": "mypassword"
 }
 ```
+
+**Note:** `identifier` can be either email or mobile number.
 
 **Success Response:**
 
