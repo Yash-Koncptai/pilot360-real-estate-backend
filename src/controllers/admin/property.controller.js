@@ -23,6 +23,7 @@ class PropertyController {
         price,
         type,
         size,
+        primary_purpose,
         location,
         latitude,
         longitude,
@@ -37,7 +38,8 @@ class PropertyController {
         !size ||
         !location ||
         !latitude ||
-        !longitude
+        !longitude ||
+        !primary_purpose
       ) {
         return res
           .status(400)
@@ -60,6 +62,7 @@ class PropertyController {
         price: price,
         type: type,
         size: size,
+        primary_purpose: primary_purpose,
         location: location,
         latitude: latitude,
         longitude: longitude,
@@ -87,6 +90,7 @@ class PropertyController {
         price,
         type,
         size,
+        primary_purpose,
         location,
         latitude,
         longitude,
@@ -103,7 +107,8 @@ class PropertyController {
         !size ||
         !location ||
         !latitude ||
-        !longitude
+        !longitude ||
+        !primary_purpose
       ) {
         return res
           .status(400)
@@ -146,6 +151,7 @@ class PropertyController {
       property.price = price;
       property.type = type;
       property.size = size;
+      property.primary_purpose = primary_purpose;
       property.location = location;
       property.latitude = latitude;
       property.longitude = longitude;

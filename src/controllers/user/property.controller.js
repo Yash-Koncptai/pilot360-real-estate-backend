@@ -29,12 +29,16 @@ class PropertyController {
 
   async propertiesfetch(req, res, next) {
     try {
-      const { type, min, max, location } = req.query;
+      const { type, min, max, location, primary_purpose } = req.query;
 
       const where = {};
 
       if (type) {
         where.type = type;
+      }
+
+      if (primary_purpose) {
+        where.primary_purpose = primary_purpose;
       }
 
       if (min || max) {
@@ -86,8 +90,10 @@ class PropertyController {
         userPreference.land_interests.length > 0
       ) {
         where.type = { [Op.in]: userPreference.land_interests };
-      } else if (userPreference.primary_purpose) {
-        where.type = userPreference.primary_purpose;
+      }
+
+      if (userPreference.primary_purpose) {
+        where.primary_purpose = userPreference.primary_purpose;
       }
 
       if (userPreference.budget_min || userPreference.budget_max) {

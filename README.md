@@ -146,6 +146,7 @@ Content-Type: application/json
       "price": 67,
       "type": "edit type",
       "size": "56 sqft",
+      "primary_purpose": "Personal Use",
       "location": "kolkata",
       "latitude": 8.3,
       "longitude": 6.34,
@@ -181,19 +182,20 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field       | Type    | Description                              |
-| ----------- | ------- | ---------------------------------------- |
-| title       | string  | Title of the property                    |
-| price       | number  | Price of the property                    |
-| type        | string  | Property type (e.g., Agricultural, etc.) |
-| size        | string  | Size of the property (e.g., "10 acres")  |
-| location    | string  | Location address                         |
-| latitude    | number  | Latitude coordinate                      |
-| longitude   | number  | Longitude coordinate                     |
-| description | string  | Description of the property              |
-| privacy     | boolean | Privacy flag (true or false)             |
-| features    | string  | Comma-separated list of features         |
-| images      | file[]  | One or more image files of the property  |
+| Field           | Type    | Description                                      |
+| --------------- | ------- | ------------------------------------------------ |
+| title           | string  | Title of the property                            |
+| price           | number  | Price of the property                            |
+| type            | string  | Property type (e.g., Agricultural, etc.)         |
+| size            | string  | Size of the property (e.g., "10 acres")          |
+| primary_purpose | string  | Primary purpose (e.g., Personal Use, Investment) |
+| location        | string  | Location address                                 |
+| latitude        | number  | Latitude coordinate                              |
+| longitude       | number  | Longitude coordinate                             |
+| description     | string  | Description of the property                      |
+| privacy         | boolean | Privacy flag (true or false)                     |
+| features        | string  | Comma-separated list of features                 |
+| images          | file[]  | One or more image files of the property          |
 
 ---
 
@@ -203,6 +205,7 @@ Content-Type: multipart/form-data
 - `price`: 500000
 - `type`: Agricultural
 - `size`: 10 acres
+- `primary_purpose`: Personal Use
 - `location`: Jaipur, Rajasthan
 - `latitude`: 26.9124
 - `longitude`: 75.7873
@@ -227,6 +230,7 @@ Content-Type: multipart/form-data
     "price": 500000,
     "type": "Agricultural",
     "size": "10 acres",
+    "primary_purpose": "Personal Use",
     "location": "Jaipur, Rajasthan",
     "latitude": 26.9124,
     "longitude": 75.7873,
@@ -263,21 +267,22 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field          | Type    | Description                                |
-| -------------- | ------- | ------------------------------------------ |
-| title          | string  | Title of the property                      |
-| price          | number  | Price of the property                      |
-| type           | string  | Property type (e.g., Agricultural, etc.)   |
-| size           | string  | Size of the property (e.g., "10 acres")    |
-| location       | string  | Location address                           |
-| latitude       | number  | Latitude coordinate                        |
-| longitude      | number  | Longitude coordinate                       |
-| description    | string  | Description of the property                |
-| privacy        | boolean | Privacy flag (true or false)               |
-| features       | string  | Comma-separated list of features           |
-| existingimages | string  | Comma-separated list of non-deleted images |
-| deletedimages  | string  | Comma-separated list of deleted images     |
-| images         | file[]  | One or more image files of the property    |
+| Field           | Type    | Description                                |
+| --------------- | ------- | ------------------------------------------ |
+| title           | string  | Title of the property                      |
+| price           | number  | Price of the property                      |
+| type            | string  | Property type (e.g., Agricultural, etc.)   |
+| size            | string  | Size of the property (e.g., "10 acres")    |
+| primary_purpose | string  | Primary purpose (e.g., Personal Use)       |
+| location        | string  | Location address                           |
+| latitude        | number  | Latitude coordinate                        |
+| longitude       | number  | Longitude coordinate                       |
+| description     | string  | Description of the property                |
+| privacy         | boolean | Privacy flag (true or false)               |
+| features        | string  | Comma-separated list of features           |
+| existingimages  | string  | Comma-separated list of non-deleted images |
+| deletedimages   | string  | Comma-separated list of deleted images     |
+| images          | file[]  | One or more image files of the property    |
 
 ---
 
@@ -287,6 +292,7 @@ Content-Type: multipart/form-data
 - `price`: 500000
 - `type`: Agricultural
 - `size`: 10 acres
+- `primary_purpose`: Personal Use
 - `location`: Jaipur, Rajasthan
 - `latitude`: 26.9124
 - `longitude`: 75.7873
@@ -313,6 +319,7 @@ Content-Type: multipart/form-data
     "price": 500000,
     "type": "Agricultural",
     "size": "10 acres",
+    "primary_purpose": "Personal Use",
     "location": "Jaipur, Rajasthan",
     "latitude": 26.9124,
     "longitude": 75.7873,
@@ -407,6 +414,7 @@ Content-Type: application/json
       "price": 500000,
       "type": "Agricultural",
       "size": "10 acres",
+      "primary_purpose": "Personal Use",
       "location": "Jaipur, Rajasthan",
       "latitude": 26.9124,
       "longitude": 75.7873,
@@ -627,7 +635,7 @@ User login.
 
 ---
 
-### `GET /api/user/properties?type=<TYPE>&min=<MIN_PRICE>&max=<MAX_PRICE>&location=<LOCATION>`
+### `GET /api/user/properties?type=<TYPE>&primary_purpose=<PRIMARY_PURPOSE>&min=<MIN_PRICE>&max=<MAX_PRICE>&location=<LOCATION>`
 
 Properties fetching with optional filtering (Remove all params to fetch all properties).
 
@@ -648,6 +656,7 @@ Properties fetching with optional filtering (Remove all params to fetch all prop
       "price": 500000,
       "type": "Agricultural",
       "size": "10 acres",
+      "primary_purpose": "Personal Use",
       "location": "Jaipur, Rajasthan",
       "latitude": 26.9124,
       "longitude": 75.7873,
@@ -688,6 +697,7 @@ Property fetching.
     "price": 500000,
     "type": "Agricultural",
     "size": "10 acres",
+    "primary_purpose": "Personal Use",
     "location": "Jaipur, Rajasthan",
     "latitude": 26.9124,
     "longitude": 75.7873,

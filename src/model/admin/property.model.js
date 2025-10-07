@@ -25,6 +25,10 @@ const Property = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    primary_purpose: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     location: {
       type: DataTypes.STRING,
       allowNull: false,
