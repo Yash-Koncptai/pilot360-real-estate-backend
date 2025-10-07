@@ -437,6 +437,59 @@ Content-Type: application/json
 
 ---
 
+### `GET /api/admin/inquiries`
+
+Inquiries fetching.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "inquiries": [
+    {
+      "id": 3,
+      "name": "test",
+      "email": "test@gmail.com",
+      "visit_date": "2025-10-02T00:00:00.000Z",
+      "message": "testing",
+      "property_id": 1,
+      "user_id": 7,
+      "createdAt": "2025-09-29T12:29:19.207Z",
+      "updatedAt": "2025-09-29T12:29:19.207Z",
+      "user": {
+        "name": "test",
+        "email": "test@gmail.com"
+      },
+      "property": {
+        "id": 1,
+        "title": "Farm Land in Rajasthan",
+        "price": 500000,
+        "type": "Agricultural",
+        "size": "10 acres",
+        "primary_purpose": "Personal Use",
+        "location": "Jaipur, Rajasthan"
+      }
+    }
+  ],
+  "message": "inquiries fetched successfully."
+}
+```
+
+---
+
+---
+
 ### `POST /api/admin/suggestions`
 
 Property suggestion.

@@ -5,6 +5,7 @@ const propertyController = require("../controllers/admin/property.controller");
 const dashboardController = require("../controllers/admin/dashboard.controller");
 const userController = require("../controllers/admin/user.controller");
 const suggestionController = require("../controllers/admin/suggestion.controller");
+const inquiryController = require("../controllers/admin/inquiry.controller");
 const upload = require("../utils/multer");
 
 const router = express.Router();
@@ -37,5 +38,8 @@ router.get("/users", auth, userController.usersfetching);
 
 // Suggestions
 router.post("/suggestions", auth, suggestionController.suggestproperty);
+
+// Inquiries
+router.get("/inquiries", auth, inquiryController.inquiriesfetching);
 
 module.exports = router;
