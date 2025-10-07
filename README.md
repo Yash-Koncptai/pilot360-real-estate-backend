@@ -850,8 +850,7 @@ Content-Type: application/json
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
   ],
-  "message": "recommended properties fetched successfully.",
-  "locked": false
+  "message": "recommended properties fetched successfully."
 }
 ```
 

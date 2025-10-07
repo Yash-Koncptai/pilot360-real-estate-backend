@@ -78,57 +78,112 @@ class PropertyController {
         return res.status(403).json({
           success: false,
           message: "please set your preferences first.",
-          locked: true,
         });
       }
 
-      const where = {};
+      // Build OR-based search to fetch properties that match ANY preference
+      const orConditions = [];
 
-      if (
-        userPreference.land_interests &&
+      const hasLandInterests =
         Array.isArray(userPreference.land_interests) &&
-        userPreference.land_interests.length > 0
-      ) {
-        where.type = { [Op.in]: userPreference.land_interests };
-      }
-
-      if (userPreference.primary_purpose) {
-        where.primary_purpose = userPreference.primary_purpose;
-      }
-
-      if (userPreference.budget_min || userPreference.budget_max) {
-        where.price = {};
-        if (userPreference.budget_min) {
-          where.price[Op.gte] = userPreference.budget_min;
-        }
-        if (userPreference.budget_max) {
-          where.price[Op.lte] = userPreference.budget_max;
-        }
-      }
-
-      if (
-        userPreference.preferred_location &&
+        userPreference.land_interests.length > 0;
+      const hasPrimaryPurpose = Boolean(userPreference.primary_purpose);
+      const hasBudgetRange =
+        typeof userPreference.budget_min === "number" &&
+        typeof userPreference.budget_max === "number";
+      const hasPreferredLocations =
         Array.isArray(userPreference.preferred_location) &&
-        userPreference.preferred_location.length > 0
-      ) {
+        userPreference.preferred_location.length > 0;
+
+      if (hasLandInterests) {
+        orConditions.push({ type: { [Op.in]: userPreference.land_interests } });
+      }
+
+      if (hasPrimaryPurpose) {
+        orConditions.push({ primary_purpose: userPreference.primary_purpose });
+      }
+
+      if (hasBudgetRange) {
+        orConditions.push({
+          price: {
+            [Op.between]: [
+              userPreference.budget_min,
+              userPreference.budget_max,
+            ],
+          },
+        });
+      }
+
+      if (hasPreferredLocations) {
         const patterns = userPreference.preferred_location.map(
           (loc) => `%${loc}%`
         );
-        where.location = { [Op.iLike]: { [Op.any]: patterns } };
-      } else if (userPreference.preferred_location) {
-        const pattern = `%${userPreference.preferred_location}%`;
-        where.location = { [Op.iLike]: pattern };
+        orConditions.push({ location: { [Op.iLike]: { [Op.any]: patterns } } });
       }
 
-      const recommendedProperties = await Property.findAll({
-        where,
+      const anyMatchWhere =
+        orConditions.length > 0 ? { [Op.or]: orConditions } : {};
+
+      const matchedProperties = await Property.findAll({
+        where: anyMatchWhere,
       });
+
+      // Compute match percentage per property and sort by highest match
+      const totalCriteria =
+        [
+          hasLandInterests,
+          hasPrimaryPurpose,
+          hasBudgetRange,
+          hasPreferredLocations,
+        ].filter(Boolean).length || 1;
+
+      const propertiesWithScores = matchedProperties
+        .map((prop) => {
+          const property = prop.toJSON();
+
+          let matches = 0;
+
+          if (
+            hasLandInterests &&
+            userPreference.land_interests.includes(property.type)
+          ) {
+            matches += 1;
+          }
+
+          if (
+            hasPrimaryPurpose &&
+            property.primary_purpose === userPreference.primary_purpose
+          ) {
+            matches += 1;
+          }
+
+          if (
+            hasBudgetRange &&
+            typeof property.price === "number" &&
+            property.price >= userPreference.budget_min &&
+            property.price <= userPreference.budget_max
+          ) {
+            matches += 1;
+          }
+
+          if (hasPreferredLocations && typeof property.location === "string") {
+            const propertyLocation = property.location.toLowerCase();
+            const locationMatched = userPreference.preferred_location.some(
+              (loc) => propertyLocation.includes(String(loc).toLowerCase())
+            );
+            if (locationMatched) matches += 1;
+          }
+
+          const matchPercentage = Math.round((matches / totalCriteria) * 100);
+
+          return { ...property, matchPercentage };
+        })
+        .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
       return res.status(200).json({
         success: true,
-        properties: recommendedProperties,
+        properties: propertiesWithScores,
         message: "recommended properties fetched successfully.",
-        locked: false,
       });
     } catch (err) {
       next(err);
