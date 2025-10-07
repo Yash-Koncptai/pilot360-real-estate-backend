@@ -398,6 +398,27 @@ Content-Type: application/json
       "updatedAt": "2025-09-25T11:32:58.997Z"
     }
   ],
+  "properties": [
+    {
+      "id": 1,
+      "title": "Farm Land in Rajasthan",
+      "price": 500000,
+      "type": "Agricultural",
+      "size": "10 acres",
+      "location": "Jaipur, Rajasthan",
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "description": "Fertile land with canal access.",
+      "private": true,
+      "features": ["Well", "Canal", "Fenced"],
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
+    }
+  ]
   "message": "users fetch successfully."
 }
 ```
