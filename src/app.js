@@ -1,5 +1,4 @@
 const express = require("express");
-const sequelize = require("./config/database");
 const adminRoutes = require("./routes/admin.routes");
 const userRoutes = require("./routes/user.routes");
 const path = require("path");
@@ -19,7 +18,5 @@ app.use((err, req, res, next) => {
   console.error(err.message);
   res.status(500).json({ success: false, message: err.message });
 });
-
-sequelize.sync();
 
 module.exports = app;
