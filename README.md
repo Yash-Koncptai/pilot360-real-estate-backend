@@ -899,6 +899,7 @@ Content-Type: application/json
         "uploads/properties/1759230299249-703738047.png"
       ],
       "views": 15,
+      "matchPercentage": 100,
       "updatedAt": "2025-09-22T13:20:52.081Z",
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
