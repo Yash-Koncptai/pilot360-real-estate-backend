@@ -694,6 +694,13 @@ Properties fetching with optional filtering (Remove all params to fetch all prop
 
 **Method:** `GET`
 
+**Optional Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
 **Success Response:**
 
 - **Code:** `200 OK`
@@ -720,12 +727,15 @@ Properties fetching with optional filtering (Remove all params to fetch all prop
         "uploads/properties/1759230299218-739692831.png",
         "uploads/properties/1759230299249-703738047.png"
       ],
+      "matchPercentage": 100,
       "updatedAt": "2025-09-22T13:20:52.081Z",
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
   ]
 }
 ```
+
+**Note:** Match percentage is only included when user is authenticated and has set preferences.
 
 ---
 
@@ -736,6 +746,13 @@ Properties fetching with optional filtering (Remove all params to fetch all prop
 Property fetching.
 
 **Method:** `GET`
+
+**Optional Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
 
 **Success Response:**
 
@@ -761,12 +778,15 @@ Property fetching.
       "uploads/properties/1759230299218-739692831.png",
       "uploads/properties/1759230299249-703738047.png"
     ],
+    "matchPercentage": 100,
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   },
   "message": "property fetched successfully."
 }
 ```
+
+**Note:** Match percentage is only included when user is authenticated and has set preferences.
 
 **Error Responses:**
 

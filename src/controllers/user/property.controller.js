@@ -4,6 +4,62 @@ const User = require("../../model/user/user.model");
 const { Op } = require("sequelize");
 
 class PropertyController {
+  // Helper function to calculate match percentage for a property
+  static async calculateMatchPercentage(property, userPreference) {
+    const hasLandInterests =
+      Array.isArray(userPreference.land_interests) &&
+      userPreference.land_interests.length > 0;
+    const hasPrimaryPurpose = Boolean(userPreference.primary_purpose);
+    const hasBudgetRange =
+      typeof userPreference.budget_min === "number" &&
+      typeof userPreference.budget_max === "number";
+    const hasPreferredLocations =
+      Array.isArray(userPreference.preferred_location) &&
+      userPreference.preferred_location.length > 0;
+
+    const totalCriteria =
+      [
+        hasLandInterests,
+        hasPrimaryPurpose,
+        hasBudgetRange,
+        hasPreferredLocations,
+      ].filter(Boolean).length || 1;
+
+    let matches = 0;
+
+    if (
+      hasLandInterests &&
+      userPreference.land_interests.includes(property.type)
+    ) {
+      matches += 1;
+    }
+
+    if (
+      hasPrimaryPurpose &&
+      property.primary_purpose === userPreference.primary_purpose
+    ) {
+      matches += 1;
+    }
+
+    if (
+      hasBudgetRange &&
+      typeof property.price === "number" &&
+      property.price >= userPreference.budget_min &&
+      property.price <= userPreference.budget_max
+    ) {
+      matches += 1;
+    }
+
+    if (hasPreferredLocations && typeof property.location === "string") {
+      const propertyLocation = property.location.toLowerCase();
+      const locationMatched = userPreference.preferred_location.some((loc) =>
+        propertyLocation.includes(String(loc).toLowerCase())
+      );
+      if (locationMatched) matches += 1;
+    }
+
+    return Math.round((matches / totalCriteria) * 100);
+  }
   async propertyfetch(req, res, next) {
     try {
       const query = req.query;
@@ -17,9 +73,51 @@ class PropertyController {
       property.views++;
       await property.save();
 
+      // Calculate match percentage if user is authenticated
+      let propertyWithMatch = property.toJSON();
+      console.log("🔍 Debug - req.user:", req.user);
+
+      if (req.user && req.user.email) {
+        console.log("✅ User is authenticated:", req.user.email);
+        try {
+          const user = await User.findOne({ where: { email: req.user.email } });
+          if (user) {
+            console.log("✅ User found in database");
+            const userPreference = await Preference.findOne({
+              where: { user_id: user.id },
+            });
+            if (userPreference) {
+              console.log(
+                "✅ User preferences found:",
+                userPreference.toJSON()
+              );
+              const matchPercentage =
+                await PropertyController.calculateMatchPercentage(
+                  property,
+                  userPreference
+                );
+              propertyWithMatch.matchPercentage = matchPercentage;
+              console.log("✅ Match percentage calculated:", matchPercentage);
+            } else {
+              console.log("❌ No user preferences found");
+            }
+          } else {
+            console.log("❌ User not found in database");
+          }
+        } catch (preferenceError) {
+          // If preference calculation fails, continue without match percentage
+          console.log(
+            "❌ Error calculating match percentage:",
+            preferenceError.message
+          );
+        }
+      } else {
+        console.log("❌ No authentication - req.user:", req.user);
+      }
+
       res.status(200).json({
         success: true,
-        property: property,
+        property: propertyWithMatch,
         message: "property fetched successfully.",
       });
     } catch (err) {
@@ -54,9 +152,56 @@ class PropertyController {
 
       const properties = await Property.findAll({ where });
 
+      // Calculate match percentage for each property if user is authenticated
+      let propertiesWithMatch = properties.map((property) => property.toJSON());
+      console.log("🔍 Debug - req.user:", req.user);
+
+      if (req.user && req.user.email) {
+        console.log("✅ User is authenticated:", req.user.email);
+        try {
+          const user = await User.findOne({ where: { email: req.user.email } });
+          if (user) {
+            console.log("✅ User found in database");
+            const userPreference = await Preference.findOne({
+              where: { user_id: user.id },
+            });
+            if (userPreference) {
+              console.log(
+                "✅ User preferences found:",
+                userPreference.toJSON()
+              );
+              propertiesWithMatch = await Promise.all(
+                properties.map(async (property) => {
+                  const propertyData = property.toJSON();
+                  const matchPercentage =
+                    await PropertyController.calculateMatchPercentage(
+                      property,
+                      userPreference
+                    );
+                  return { ...propertyData, matchPercentage };
+                })
+              );
+              console.log("✅ Match percentages calculated for all properties");
+            } else {
+              console.log("❌ No user preferences found");
+            }
+          } else {
+            console.log("❌ User not found in database");
+          }
+        } catch (preferenceError) {
+          // If preference calculation fails, continue without match percentage
+          console.log(
+            "❌ Error calculating match percentage:",
+            preferenceError.message
+          );
+        }
+      } else {
+        console.log("❌ No authentication - req.user:", req.user);
+      }
+
       return res.status(200).json({
         success: true,
-        properties: properties,
+        properties: propertiesWithMatch,
         message: "properties fetched successfully.",
       });
     } catch (err) {

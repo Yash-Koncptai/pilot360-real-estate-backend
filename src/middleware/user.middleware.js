@@ -47,4 +47,42 @@ async function verifyJWT(req, res, next) {
   }
 }
 
+// Optional authentication middleware - doesn't fail if no token provided
+async function optionalAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    // No token provided, continue without authentication
+    return next();
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role !== "user") {
+      // Invalid role, continue without authentication
+      return next();
+    }
+
+    const user = await User.findOne({ where: { email: decoded.email } });
+    if (!user) {
+      // User not found, continue without authentication
+      return next();
+    }
+
+    req.user = {
+      email: user.email,
+      role: decoded.role,
+      id: user.id,
+    };
+
+    next();
+  } catch (err) {
+    // Invalid token, continue without authentication
+    next();
+  }
+}
+
 module.exports = verifyJWT;
+module.exports.optionalAuth = optionalAuth;

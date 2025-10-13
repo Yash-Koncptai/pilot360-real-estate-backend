@@ -14,8 +14,12 @@ router.post("/otp", userController.otprequest);
 router.post("/login", userController.login);
 
 // Property
-router.get("/properties", propertyController.propertiesfetch);
-router.get("/property", propertyController.propertyfetch);
+router.get(
+  "/properties",
+  auth.optionalAuth,
+  propertyController.propertiesfetch
+);
+router.get("/property", auth.optionalAuth, propertyController.propertyfetch);
 router.get("/recommendations", auth, propertyController.getRecommendations);
 
 // Inquiry
