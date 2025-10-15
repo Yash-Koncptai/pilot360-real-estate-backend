@@ -92,6 +92,10 @@ const Property = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    return_of_investment: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     features: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },

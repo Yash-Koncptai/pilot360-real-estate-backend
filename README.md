@@ -160,7 +160,7 @@ Content-Type: application/json
       "water_connectivity": true,
       "electricity_connectivity": true,
       "gas_connectivity": false,
-      "investment_gain": 15,
+      "investment_gain": 15000,
       "investment_cost": 450000,
       "market_risk": true,
       "regulatory_risk": false,
@@ -211,7 +211,7 @@ Content-Type: multipart/form-data
 | electricity_connectivity | boolean | Electricity connectivity availability            |
 | gas_connectivity         | boolean | Gas connectivity availability                    |
 | investment_gain          | number  | Potential investment gain percentage             |
-| investment_cost          | number  | Investment cost amount                           |
+| return_of_investment     | number  | Return on investment percentage                  |
 | market_risk              | boolean | Market risk indicator                            |
 | regulatory_risk          | boolean | Regulatory risk indicator                        |
 | financial_risk           | boolean | Financial risk indicator                         |
@@ -237,8 +237,8 @@ Content-Type: multipart/form-data
 - `water_connectivity`: true
 - `electricity_connectivity`: true
 - `gas_connectivity`: false
-- `investment_gain`: 15
-- `investment_cost`: 450000
+- `investment_gain`: 15000
+- `return_of_investment`: 15
 - `market_risk`: true
 - `regulatory_risk`: false
 - `financial_risk`: false
@@ -275,8 +275,8 @@ Content-Type: multipart/form-data
     "water_connectivity": true,
     "electricity_connectivity": true,
     "gas_connectivity": false,
-    "investment_gain": 15,
-    "investment_cost": 450000,
+    "investment_gain": 15000,
+    "return_of_investment": 15,
     "market_risk": true,
     "regulatory_risk": false,
     "financial_risk": false,
@@ -329,7 +329,7 @@ Content-Type: multipart/form-data
 | electricity_connectivity | boolean | Electricity connectivity availability      |
 | gas_connectivity         | boolean | Gas connectivity availability              |
 | investment_gain          | number  | Potential investment gain percentage       |
-| investment_cost          | number  | Investment cost amount                     |
+| return_of_investment     | number  | Return on investment percentage            |
 | market_risk              | boolean | Market risk indicator                      |
 | regulatory_risk          | boolean | Regulatory risk indicator                  |
 | financial_risk           | boolean | Financial risk indicator                   |
@@ -357,8 +357,8 @@ Content-Type: multipart/form-data
 - `water_connectivity`: true
 - `electricity_connectivity`: true
 - `gas_connectivity`: false
-- `investment_gain`: 15
-- `investment_cost`: 450000
+- `investment_gain`: 15000
+- `return_of_investment`: 15
 - `market_risk`: true
 - `regulatory_risk`: false
 - `financial_risk`: false
@@ -395,8 +395,8 @@ Content-Type: multipart/form-data
     "water_connectivity": true,
     "electricity_connectivity": true,
     "gas_connectivity": false,
-    "investment_gain": 15,
-    "investment_cost": 450000,
+    "investment_gain": 15000,
+    "return_of_investment": 15,
     "market_risk": true,
     "regulatory_risk": false,
     "financial_risk": false,
@@ -502,8 +502,8 @@ Content-Type: application/json
       "water_connectivity": true,
       "electricity_connectivity": true,
       "gas_connectivity": false,
-      "investment_gain": 15,
-      "investment_cost": 450000,
+      "investment_gain": 15000,
+      "return_of_investment": 15,
       "market_risk": true,
       "regulatory_risk": false,
       "financial_risk": false,
@@ -815,8 +815,8 @@ Content-Type: application/json
       "water_connectivity": true,
       "electricity_connectivity": true,
       "gas_connectivity": false,
-      "investment_gain": 15,
-      "investment_cost": 450000,
+      "investment_gain": 15000,
+      "return_of_investment": 15,
       "market_risk": true,
       "regulatory_risk": false,
       "financial_risk": false,
@@ -877,8 +877,8 @@ Content-Type: application/json
     "water_connectivity": true,
     "electricity_connectivity": true,
     "gas_connectivity": false,
-    "investment_gain": 15,
-    "investment_cost": 450000,
+    "investment_gain": 15000,
+    "return_of_investment": 15,
     "market_risk": true,
     "regulatory_risk": false,
     "financial_risk": false,
@@ -1040,7 +1040,7 @@ Content-Type: application/json
       "water_connectivity": true,
       "electricity_connectivity": true,
       "gas_connectivity": false,
-      "investment_gain": 15,
+      "investment_gain": 15000,
       "investment_cost": 450000,
       "market_risk": true,
       "regulatory_risk": false,

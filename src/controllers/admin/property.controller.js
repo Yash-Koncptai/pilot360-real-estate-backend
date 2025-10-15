@@ -34,7 +34,6 @@ class PropertyController {
         electricity_connectivity,
         gas_connectivity,
         investment_gain,
-        investment_cost,
         market_risk,
         regulatory_risk,
         financial_risk,
@@ -50,16 +49,7 @@ class PropertyController {
         !latitude ||
         !longitude ||
         !primary_purpose ||
-        !water_connectivity ||
-        !electricity_connectivity ||
-        !gas_connectivity ||
-        !investment_gain ||
-        !investment_cost ||
-        !market_risk ||
-        !regulatory_risk ||
-        !financial_risk ||
-        !liquidity_risk ||
-        !physical_risk
+        !investment_gain
       ) {
         return res
           .status(400)
@@ -105,8 +95,7 @@ class PropertyController {
         water_connectivity: water_connectivity,
         electricity_connectivity: electricity_connectivity,
         gas_connectivity: gas_connectivity,
-        investment_gain: investment_gain || 0,
-        investment_cost: investment_cost || 0,
+        investment_gain: investment_gain,
         market_risk: market_risk,
         regulatory_risk: regulatory_risk,
         financial_risk: financial_risk,
@@ -146,7 +135,6 @@ class PropertyController {
         electricity_connectivity,
         gas_connectivity,
         investment_gain,
-        investment_cost,
         market_risk,
         regulatory_risk,
         financial_risk,
@@ -162,16 +150,7 @@ class PropertyController {
         !latitude ||
         !longitude ||
         !primary_purpose ||
-        !water_connectivity ||
-        !electricity_connectivity ||
-        !gas_connectivity ||
-        !investment_gain ||
-        !investment_cost ||
-        !market_risk ||
-        !regulatory_risk ||
-        !financial_risk ||
-        !liquidity_risk ||
-        !physical_risk
+        !investment_gain
       ) {
         return res
           .status(400)
@@ -239,13 +218,14 @@ class PropertyController {
       property.electricity_connectivity = electricity_connectivity;
       property.gas_connectivity = gas_connectivity;
       property.investment_gain = investment_gain || property.investment_gain;
-      property.investment_cost = investment_cost || property.investment_cost;
       property.market_risk = market_risk;
       property.regulatory_risk = regulatory_risk;
       property.financial_risk = financial_risk;
       property.liquidity_risk = liquidity_risk;
       property.physical_risk = physical_risk;
       property.risk_percentage = risk_percentage;
+      property.return_of_investment =
+        ((property.investment_gain - property.price) / property.price) * 100;
 
       await property.save();
 
