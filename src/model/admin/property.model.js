@@ -48,6 +48,50 @@ const Property = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    water_connectivity: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    electricity_connectivity: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    gas_connectivity: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    investment_gain: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    investment_cost: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    market_risk: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    regulatory_risk: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    financial_risk: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    liquidity_risk: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    physical_risk: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    risk_percentage: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     features: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },

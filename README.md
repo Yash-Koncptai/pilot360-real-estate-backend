@@ -157,8 +157,19 @@ Content-Type: application/json
         "uploads/properties/1759230299218-739692831.png",
         "uploads/properties/1759230299249-703738047.png"
       ],
-      "createdAt": "2025-09-23T11:24:25.527Z",
-      "updatedAt": "2025-09-23T11:26:29.755Z"
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15,
+      "investment_cost": 450000,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
     }
   ]
 }
@@ -182,20 +193,30 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field           | Type    | Description                                      |
-| --------------- | ------- | ------------------------------------------------ |
-| title           | string  | Title of the property                            |
-| price           | number  | Price of the property                            |
-| type            | string  | Property type (e.g., Agricultural, etc.)         |
-| size            | string  | Size of the property (e.g., "10 acres")          |
-| primary_purpose | string  | Primary purpose (e.g., Personal Use, Investment) |
-| location        | string  | Location address                                 |
-| latitude        | number  | Latitude coordinate                              |
-| longitude       | number  | Longitude coordinate                             |
-| description     | string  | Description of the property                      |
-| privacy         | boolean | Privacy flag (true or false)                     |
-| features        | string  | Comma-separated list of features                 |
-| images          | file[]  | One or more image files of the property          |
+| Field                    | Type    | Description                                      |
+| ------------------------ | ------- | ------------------------------------------------ |
+| title                    | string  | Title of the property                            |
+| price                    | number  | Price of the property                            |
+| type                     | string  | Property type (e.g., Agricultural, etc.)         |
+| size                     | string  | Size of the property (e.g., "10 acres")          |
+| primary_purpose          | string  | Primary purpose (e.g., Personal Use, Investment) |
+| location                 | string  | Location address                                 |
+| latitude                 | number  | Latitude coordinate                              |
+| longitude                | number  | Longitude coordinate                             |
+| description              | string  | Description of the property                      |
+| privacy                  | boolean | Privacy flag (true or false)                     |
+| features                 | string  | Comma-separated list of features                 |
+| images                   | file[]  | One or more image files of the property          |
+| water_connectivity       | boolean | Water connectivity availability                  |
+| electricity_connectivity | boolean | Electricity connectivity availability            |
+| gas_connectivity         | boolean | Gas connectivity availability                    |
+| investment_gain          | number  | Potential investment gain percentage             |
+| investment_cost          | number  | Investment cost amount                           |
+| market_risk              | boolean | Market risk indicator                            |
+| regulatory_risk          | boolean | Regulatory risk indicator                        |
+| financial_risk           | boolean | Financial risk indicator                         |
+| liquidity_risk           | boolean | Liquidity risk indicator                         |
+| physical_risk            | boolean | Physical risk indicator                          |
 
 ---
 
@@ -213,6 +234,16 @@ Content-Type: multipart/form-data
 - `privacy`: true
 - `features`: Well, Canal, Fenced
 - `images`: [file1.png, file2.png, ...]
+- `water_connectivity`: true
+- `electricity_connectivity`: true
+- `gas_connectivity`: false
+- `investment_gain`: 15
+- `investment_cost`: 450000
+- `market_risk`: true
+- `regulatory_risk`: false
+- `financial_risk`: false
+- `liquidity_risk`: true
+- `physical_risk`: false
 
 ---
 
@@ -241,6 +272,17 @@ Content-Type: multipart/form-data
       "uploads/properties/1759230299218-739692831.png",
       "uploads/properties/1759230299249-703738047.png"
     ],
+    "water_connectivity": true,
+    "electricity_connectivity": true,
+    "gas_connectivity": false,
+    "investment_gain": 15,
+    "investment_cost": 450000,
+    "market_risk": true,
+    "regulatory_risk": false,
+    "financial_risk": false,
+    "liquidity_risk": true,
+    "physical_risk": false,
+    "risk_percentage": 50,
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   }
@@ -253,7 +295,7 @@ Content-Type: multipart/form-data
 
 ---
 
-### `POST /api/admin/property/update?id=<PROPERTY ID>`
+### `PUT /api/admin/property/update?id=<PROPERTY ID>`
 
 Property updating.
 
@@ -267,22 +309,32 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field           | Type    | Description                                |
-| --------------- | ------- | ------------------------------------------ |
-| title           | string  | Title of the property                      |
-| price           | number  | Price of the property                      |
-| type            | string  | Property type (e.g., Agricultural, etc.)   |
-| size            | string  | Size of the property (e.g., "10 acres")    |
-| primary_purpose | string  | Primary purpose (e.g., Personal Use)       |
-| location        | string  | Location address                           |
-| latitude        | number  | Latitude coordinate                        |
-| longitude       | number  | Longitude coordinate                       |
-| description     | string  | Description of the property                |
-| privacy         | boolean | Privacy flag (true or false)               |
-| features        | string  | Comma-separated list of features           |
-| existingimages  | string  | Comma-separated list of non-deleted images |
-| deletedimages   | string  | Comma-separated list of deleted images     |
-| images          | file[]  | One or more image files of the property    |
+| Field                    | Type    | Description                                |
+| ------------------------ | ------- | ------------------------------------------ |
+| title                    | string  | Title of the property                      |
+| price                    | number  | Price of the property                      |
+| type                     | string  | Property type (e.g., Agricultural, etc.)   |
+| size                     | string  | Size of the property (e.g., "10 acres")    |
+| primary_purpose          | string  | Primary purpose (e.g., Personal Use)       |
+| location                 | string  | Location address                           |
+| latitude                 | number  | Latitude coordinate                        |
+| longitude                | number  | Longitude coordinate                       |
+| description              | string  | Description of the property                |
+| privacy                  | boolean | Privacy flag (true or false)               |
+| features                 | string  | Comma-separated list of features           |
+| existingimages           | string  | Comma-separated list of non-deleted images |
+| deletedimages            | string  | Comma-separated list of deleted images     |
+| images                   | file[]  | One or more image files of the property    |
+| water_connectivity       | boolean | Water connectivity availability            |
+| electricity_connectivity | boolean | Electricity connectivity availability      |
+| gas_connectivity         | boolean | Gas connectivity availability              |
+| investment_gain          | number  | Potential investment gain percentage       |
+| investment_cost          | number  | Investment cost amount                     |
+| market_risk              | boolean | Market risk indicator                      |
+| regulatory_risk          | boolean | Regulatory risk indicator                  |
+| financial_risk           | boolean | Financial risk indicator                   |
+| liquidity_risk           | boolean | Liquidity risk indicator                   |
+| physical_risk            | boolean | Physical risk indicator                    |
 
 ---
 
@@ -302,6 +354,16 @@ Content-Type: multipart/form-data
 - `images`: [file1.png, file2.png, ...]
 - `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
 - `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `water_connectivity`: true
+- `electricity_connectivity`: true
+- `gas_connectivity`: false
+- `investment_gain`: 15
+- `investment_cost`: 450000
+- `market_risk`: true
+- `regulatory_risk`: false
+- `financial_risk`: false
+- `liquidity_risk`: true
+- `physical_risk`: false
 
 ---
 
@@ -329,7 +391,18 @@ Content-Type: multipart/form-data
     "images": [
       "uploads/properties/1759230299218-739692831.png",
       "uploads/properties/1759230299249-703738047.png"
-    ],
+    ],s
+    "water_connectivity": true,
+    "electricity_connectivity": true,
+    "gas_connectivity": false,
+    "investment_gain": 15,
+    "investment_cost": 450000,
+    "market_risk": true,
+    "regulatory_risk": false,
+    "financial_risk": false,
+    "liquidity_risk": tru e,
+    "physical_risk": false,
+    "risk_percentage": 50,
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   }
@@ -394,6 +467,7 @@ Content-Type: application/json
 
 ```json
 {
+  "message": "users fetch successfully.",
   "success": true,
   "users": [
     {
@@ -425,11 +499,21 @@ Content-Type: application/json
         "uploads/properties/1759230299218-739692831.png",
         "uploads/properties/1759230299249-703738047.png"
       ],
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15,
+      "investment_cost": 450000,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
       "updatedAt": "2025-09-22T13:20:52.081Z",
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
   ]
-  "message": "users fetch successfully."
 }
 ```
 
@@ -728,6 +812,17 @@ Content-Type: application/json
         "uploads/properties/1759230299249-703738047.png"
       ],
       "matchPercentage": 100,
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15,
+      "investment_cost": 450000,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
       "updatedAt": "2025-09-22T13:20:52.081Z",
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
@@ -779,6 +874,17 @@ Content-Type: application/json
       "uploads/properties/1759230299249-703738047.png"
     ],
     "matchPercentage": 100,
+    "water_connectivity": true,
+    "electricity_connectivity": true,
+    "gas_connectivity": false,
+    "investment_gain": 15,
+    "investment_cost": 450000,
+    "market_risk": true,
+    "regulatory_risk": false,
+    "financial_risk": false,
+    "liquidity_risk": true,
+    "physical_risk": false,
+    "risk_percentage": 50,
     "updatedAt": "2025-09-22T13:20:52.081Z",
     "createdAt": "2025-09-22T13:20:52.081Z"
   },
@@ -806,6 +912,17 @@ Property inquiry.
 ```http
 Authorization: Bearer <JWT Token>
 Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "visit_date": "2025-10-02",
+  "message": "I would like to schedule a visit."
+}
 ```
 
 **Success Response:**
@@ -920,6 +1037,17 @@ Content-Type: application/json
       ],
       "views": 15,
       "matchPercentage": 100,
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15,
+      "investment_cost": 450000,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
       "updatedAt": "2025-09-22T13:20:52.081Z",
       "createdAt": "2025-09-22T13:20:52.081Z"
     }
@@ -986,5 +1114,6 @@ Content-Type: application/json
 **Error Responses:**
 
 - **400 Bad Request** – missing required fields.
+- **400 Bad Request** – invalid budget range.
 
 ---

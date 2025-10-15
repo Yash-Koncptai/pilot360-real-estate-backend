@@ -30,6 +30,16 @@ class PropertyController {
         description,
         privacy,
         features,
+        water_connectivity,
+        electricity_connectivity,
+        gas_connectivity,
+        investment_gain,
+        investment_cost,
+        market_risk,
+        regulatory_risk,
+        financial_risk,
+        liquidity_risk,
+        physical_risk,
       } = req.body;
       if (
         !title ||
@@ -39,7 +49,17 @@ class PropertyController {
         !location ||
         !latitude ||
         !longitude ||
-        !primary_purpose
+        !primary_purpose ||
+        !water_connectivity ||
+        !electricity_connectivity ||
+        !gas_connectivity ||
+        !investment_gain ||
+        !investment_cost ||
+        !market_risk ||
+        !regulatory_risk ||
+        !financial_risk ||
+        !liquidity_risk ||
+        !physical_risk
       ) {
         return res
           .status(400)
@@ -56,7 +76,19 @@ class PropertyController {
       if (typeof features === "string") {
         featuresArray = features.split(",").map((f) => f.trim());
       }
-
+      let ch = {
+        market_risk: { true: 30 },
+        regulatory_risk: { true: 25 },
+        financial_risk: { true: 10 },
+        liquidity_risk: { true: 20 },
+        physical_risk: { true: 15 },
+      };
+      let risk_percentage =
+        (ch.market_risk[market_risk] || 0) +
+        (ch.regulatory_risk[regulatory_risk] || 0) +
+        (ch.financial_risk[financial_risk] || 0) +
+        (ch.liquidity_risk[liquidity_risk] || 0) +
+        (ch.physical_risk[physical_risk] || 0);
       const property = await Property.create({
         title: title,
         price: price,
@@ -70,6 +102,17 @@ class PropertyController {
         private: privacy,
         features: featuresArray,
         images: images,
+        water_connectivity: water_connectivity,
+        electricity_connectivity: electricity_connectivity,
+        gas_connectivity: gas_connectivity,
+        investment_gain: investment_gain || 0,
+        investment_cost: investment_cost || 0,
+        market_risk: market_risk,
+        regulatory_risk: regulatory_risk,
+        financial_risk: financial_risk,
+        liquidity_risk: liquidity_risk,
+        physical_risk: physical_risk,
+        risk_percentage: risk_percentage,
       });
 
       res.status(201).json({
@@ -99,6 +142,16 @@ class PropertyController {
         features,
         existingimages,
         deletedimages,
+        water_connectivity,
+        electricity_connectivity,
+        gas_connectivity,
+        investment_gain,
+        investment_cost,
+        market_risk,
+        regulatory_risk,
+        financial_risk,
+        liquidity_risk,
+        physical_risk,
       } = req.body;
       if (
         !title ||
@@ -108,7 +161,17 @@ class PropertyController {
         !location ||
         !latitude ||
         !longitude ||
-        !primary_purpose
+        !primary_purpose ||
+        !water_connectivity ||
+        !electricity_connectivity ||
+        !gas_connectivity ||
+        !investment_gain ||
+        !investment_cost ||
+        !market_risk ||
+        !regulatory_risk ||
+        !financial_risk ||
+        !liquidity_risk ||
+        !physical_risk
       ) {
         return res
           .status(400)
@@ -146,6 +209,19 @@ class PropertyController {
       if (typeof features === "string") {
         featuresArray = features.split(",").map((f) => f.trim());
       }
+      let ch = {
+        market_risk: { true: 30 },
+        regulatory_risk: { true: 25 },
+        financial_risk: { true: 10 },
+        liquidity_risk: { true: 20 },
+        physical_risk: { true: 15 },
+      };
+      let risk_percentage =
+        (ch.market_risk[market_risk] || 0) +
+        (ch.regulatory_risk[regulatory_risk] || 0) +
+        (ch.financial_risk[financial_risk] || 0) +
+        (ch.liquidity_risk[liquidity_risk] || 0) +
+        (ch.physical_risk[physical_risk] || 0);
 
       property.title = title;
       property.price = price;
@@ -159,6 +235,17 @@ class PropertyController {
       property.private = privacy;
       property.features = featuresArray;
       property.images = newimages;
+      property.water_connectivity = water_connectivity;
+      property.electricity_connectivity = electricity_connectivity;
+      property.gas_connectivity = gas_connectivity;
+      property.investment_gain = investment_gain || property.investment_gain;
+      property.investment_cost = investment_cost || property.investment_cost;
+      property.market_risk = market_risk;
+      property.regulatory_risk = regulatory_risk;
+      property.financial_risk = financial_risk;
+      property.liquidity_risk = liquidity_risk;
+      property.physical_risk = physical_risk;
+      property.risk_percentage = risk_percentage;
 
       await property.save();
 
