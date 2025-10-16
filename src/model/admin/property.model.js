@@ -89,7 +89,7 @@ const Property = sequelize.define(
       allowNull: false,
     },
     return_of_investment: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     features: {
