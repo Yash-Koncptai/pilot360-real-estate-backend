@@ -102,6 +102,7 @@ class PropertyController {
         liquidity_risk: liquidity_risk,
         physical_risk: physical_risk,
         risk_percentage: risk_percentage,
+        return_of_investment: ((investment_gain - price) / price) * 100,
       });
 
       res.status(201).json({

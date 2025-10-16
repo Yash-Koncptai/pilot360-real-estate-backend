@@ -64,10 +64,6 @@ const Property = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    investment_cost: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     market_risk: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
