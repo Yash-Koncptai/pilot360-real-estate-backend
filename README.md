@@ -1,5 +1,38 @@
 # 🌾 Chookhi Jameen APIs
 
+## Environment Variables
+
+Ensure the following variables are set in your `.env` file:
+
+- `PORT`
+- `DB_HOST`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASS`
+- `DB_PORT`
+- `ADMINUSERNAME`
+- `ADMINEMAIL`
+- `ADMINPASS`
+
+### EmailJS Configuration
+
+Add these for EmailJS OTP delivery:
+
+- `EMAILJS_SERVICE_ID` — your EmailJS service ID
+- `EMAILJS_TEMPLATE_ID` — template with variables: `to_email`, `to_name`, `from_name`, `otp`
+- `EMAILJS_PUBLIC_KEY` — EmailJS public key
+- `EMAILJS_PRIVATE_KEY` — EmailJS private key (optional but recommended for security)
+
+**EmailJS Setup:**
+
+1. Create account at emailjs.com
+2. Create email service (Gmail, Outlook, etc.)
+3. Create email template with variables: `{{to_email}}`, `{{to_name}}`, `{{from_name}}`, `{{otp}}`
+4. Get your Service ID, Template ID, Public Key, and Private Key
+5. Add them to your `.env` file
+
+OTP emails are sent securely from the server on user signup and OTP resend using EmailJS Node.js SDK.
+
 ## 📘 Admin API Endpoints
 
 ---

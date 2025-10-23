@@ -3,6 +3,7 @@ const User = require("../../model/user/user.model");
 const { generateJWT } = require("../../utils/jwt");
 const OTP = require("../../model/user/otp.model");
 const { Op } = require("sequelize");
+const { sendOtpEmail } = require("../../utils/emailjs");
 
 class UserController {
   async singup(req, res, next) {
@@ -29,7 +30,14 @@ class UserController {
         otp: otp,
         expires_at: expiresAt,
       });
-      // sendOtp()
+      try {
+        await sendOtpEmail({ toEmail: email, toName: name, otp });
+      } catch (e) {
+        console.error(
+          "Failed to send signup OTP email:",
+          e?.response?.data || e.message
+        );
+      }
 
       res.status(201).json({
         success: true,
@@ -91,7 +99,14 @@ class UserController {
         otp: otp,
         expires_at: expiresAt,
       });
-      // sendOtp()
+      try {
+        await sendOtpEmail({ toEmail: email, toName: user.name, otp });
+      } catch (e) {
+        console.error(
+          "Failed to send resend OTP email:",
+          e?.response?.data || e.message
+        );
+      }
 
       res
         .status(200)

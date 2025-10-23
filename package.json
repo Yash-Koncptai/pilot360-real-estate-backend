@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Yash-Koncptai/pilot360-real-estate-backend#readme",
   "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
+    "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^4.1.2",
@@ -27,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.10",
     "pg": "^8.16.3",
     "sequelize": "^6.37.7"
   },
