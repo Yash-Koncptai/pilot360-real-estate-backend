@@ -24,7 +24,7 @@ router.post(
 router.put(
   "/property/update",
   auth,
-  upload.array("images", 10),
+  upload.array("images", 20),
   propertyController.editproperty
 );
 router.delete("/property/delete", auth, propertyController.deleteproperty);
