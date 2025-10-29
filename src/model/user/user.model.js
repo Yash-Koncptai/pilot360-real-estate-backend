@@ -15,7 +15,6 @@ const User = sequelize.define(
     },
     mobile: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
     },
     email: {
@@ -30,6 +29,19 @@ const User = sequelize.define(
     verification: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+    },
+    referralCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    referredBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

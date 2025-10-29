@@ -3,17 +3,29 @@ const User = require("../../model/user/user.model");
 const { generateJWT } = require("../../utils/jwt");
 const OTP = require("../../model/user/otp.model");
 const { Op } = require("sequelize");
-const { sendOtpEmail } = require("../../utils/emailjs");
+const { sendEmail } = require("../../utils/emailjs");
+const { generateReferralCode } = require("../../utils/referralCode");
 
 class UserController {
   async singup(req, res, next) {
     try {
-      const { name, mobile, email, password } = req.body;
-      if (!name || !mobile || !email || !password)
+      const { name, mobile, email, password, referral } = req.body;
+      if (!name || !mobile || !email || !password || !referral)
         return res
           .status(400)
           .json({ success: false, message: "missing required fields." });
       const hashedPassword = await bcrypt.hash(password, 10);
+
+      const referrer = await User.findOne({
+        where: { referralCode: referral },
+      });
+      if (!referrer) {
+        return res
+          .status(400)
+          .json({ success: false, message: "invalid referral code." });
+      }
+
+      const referralCode = await generateReferralCode("REF", 6);
 
       const user = await User.create({
         name: name,
@@ -21,6 +33,9 @@ class UserController {
         mobile: mobile,
         password: hashedPassword,
         verification: false,
+        referralCode: referralCode,
+        role: "Regular User",
+        referredBy: referral,
       });
 
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -31,7 +46,12 @@ class UserController {
         expires_at: expiresAt,
       });
       try {
-        await sendOtpEmail({ toEmail: email, toName: name, otp });
+        await sendEmail({
+          toEmail: email,
+          toName: name,
+          subject: "otp",
+          data: { otp },
+        });
       } catch (e) {
         console.error(
           "Failed to send signup OTP email:",
@@ -42,6 +62,7 @@ class UserController {
       res.status(201).json({
         success: true,
         otp: otp,
+        referralCode: referralCode,
         message: "user created successfully.",
       });
     } catch (err) {
@@ -100,7 +121,12 @@ class UserController {
         expires_at: expiresAt,
       });
       try {
-        await sendOtpEmail({ toEmail: email, toName: user.name, otp });
+        await sendEmail({
+          toEmail: email,
+          toName: user.name,
+          subject: "otp",
+          data: { otp },
+        });
       } catch (e) {
         console.error(
           "Failed to send resend OTP email:",

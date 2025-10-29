@@ -16,22 +16,27 @@ Ensure the following variables are set in your `.env` file:
 
 ### EmailJS Configuration
 
-Add these for EmailJS OTP delivery:
+Add these for EmailJS email delivery (OTP and credentials):
 
 - `EMAILJS_SERVICE_ID` — your EmailJS service ID
-- `EMAILJS_TEMPLATE_ID` — template with variables: `to_email`, `to_name`, `from_name`, `otp`
+- `EMAILJS_TEMPLATE_ID` — comma-separated template IDs in this exact order: `[OTP_TEMPLATE_ID, CREDENTIALS_TEMPLATE_ID]`
 - `EMAILJS_PUBLIC_KEY` — EmailJS public key
-- `EMAILJS_PRIVATE_KEY` — EmailJS private key (optional but recommended for security)
+- `EMAILJS_PRIVATE_KEY` — EmailJS private key
+
+Templates must support the following variables:
+
+- For OTP template: `to_email`, `to_name`, `from_name`, `otp`
+- For Credentials template: `to_email`, `to_name`, `from_name`, `user_email`, `user_password`
 
 **EmailJS Setup:**
 
 1. Create account at emailjs.com
 2. Create email service (Gmail, Outlook, etc.)
-3. Create email template with variables: `{{to_email}}`, `{{to_name}}`, `{{from_name}}`, `{{otp}}`
-4. Get your Service ID, Template ID, Public Key, and Private Key
+3. Create two templates as described above (OTP and Credentials)
+4. Get your Service ID, both Template IDs, Public Key, and Private Key
 5. Add them to your `.env` file
 
-OTP emails are sent securely from the server on user signup and OTP resend using EmailJS Node.js SDK.
+Emails are sent securely from the server using the EmailJS Node.js SDK for OTPs (signup/resend) and for newly created admin-invited users' credentials.
 
 ## 📘 Admin API Endpoints
 
@@ -424,7 +429,7 @@ Content-Type: multipart/form-data
     "images": [
       "uploads/properties/1759230299218-739692831.png",
       "uploads/properties/1759230299249-703738047.png"
-    ],s
+    ],
     "water_connectivity": true,
     "electricity_connectivity": true,
     "gas_connectivity": false,
@@ -433,7 +438,7 @@ Content-Type: multipart/form-data
     "market_risk": true,
     "regulatory_risk": false,
     "financial_risk": false,
-    "liquidity_risk": tru e,
+    "liquidity_risk": true,
     "physical_risk": false,
     "risk_percentage": 50,
     "updatedAt": "2025-09-22T13:20:52.081Z",
@@ -509,6 +514,8 @@ Content-Type: application/json
       "mobile": "9090909090",
       "email": "test@gmail.com",
       "password": "$2b$10$58jGQ1WczemFYacDrPoqduWzjI2Ps3zTNHKgcCPz.1uQN4nZMAArG",
+      "role": "Regular User",
+      "referralCode": "REFABC123",
       "verification": true,
       "createdAt": "2025-09-25T11:32:33.632Z",
       "updatedAt": "2025-09-25T11:32:58.997Z"
@@ -553,6 +560,55 @@ Content-Type: application/json
 ---
 
 ---
+
+### `POST /api/admin/users/add`
+
+Create a user (by admin) and send credentials via email.
+
+**Method:** `POST`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "John AdminInvite",
+  "email": "john.invited@example.com",
+  "role": "Regular User"
+}
+```
+
+On success, a random password is generated and emailed to the user along with their email as username.
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "user": {
+    "id": 10,
+    "name": "John AdminInvite",
+    "email": "john.invited@example.com",
+    "role": "Regular User",
+    "referralCode": "REFABC123",
+    "verification": true,
+    "createdAt": "2025-10-29T12:00:00.000Z",
+    "updatedAt": "2025-10-29T12:00:00.000Z"
+  },
+  "message": "user created successfully and credentials sent via email."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – missing required fields.
 
 ### `GET /api/admin/inquiries`
 
@@ -665,7 +721,7 @@ Content-Type: application/json
 
 ### `POST /api/user/signup`
 
-User signup.
+User signup (requires valid referral code).
 
 **Method:** `POST`
 **Request Body:**
@@ -675,9 +731,15 @@ User signup.
   "name": "myname",
   "email": "myemail@gmail.com",
   "mobile": "9876543210",
-  "password": "mypassword"
+  "password": "mypassword",
+  "referral": "<VALID REFERRAL CODE>"
 }
 ```
+
+Notes:
+
+- `referral` is mandatory and must match an existing user's `referralCode`.
+- An OTP is emailed and expires in 3 minutes.
 
 **Success Response:**
 
@@ -686,14 +748,15 @@ User signup.
 ```json
 {
   "success": true,
-  "otp": "OTP",
+  "otp": "296068",
+  "referralCode": "REFXYZ12",
   "message": "user created successfully."
 }
 ```
 
 **Error Responses:**
 
-- **400 Bad Request** – missing required fields.
+- **400 Bad Request** – missing required fields or invalid referral code.
 - **409 Conflict** - user already exists.
 
 ---
