@@ -7,21 +7,18 @@ const bcrypt = require("bcryptjs");
 class UserController {
   async adduser(req, res, next) {
     try {
-      const { name, email, role } = req.body;
-      if (!name || !email || !role) {
+      const { name, email } = req.body;
+      if (!name || !email) {
         return res.status(400).json({
           success: false,
           message: "missing required fields.",
         });
       }
-      const referralCode = await generateReferralCode("REF", 6);
       const password = await generateReferralCode("USER", 12);
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({
         name,
         email,
-        role,
-        referralCode,
         password: hashedPassword,
         verification: true,
       });
