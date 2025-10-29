@@ -18,7 +18,7 @@ router.get("/property", auth, propertyController.showproperties);
 router.post(
   "/property/add",
   auth,
-  upload.array("images", 10),
+  upload.array("images", 20),
   propertyController.addproperty
 );
 router.put(
