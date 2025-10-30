@@ -30,6 +30,19 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    referralCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    referredBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     timestamps: true,
