@@ -31,7 +31,7 @@ class UserController {
           toEmail: email,
           toName: name,
           subject: "credentials",
-          data: { email, password },
+          data: { email, password, referral: referralCode },
         });
       } catch (emailError) {
         console.error(

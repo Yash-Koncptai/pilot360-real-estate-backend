@@ -27,6 +27,7 @@ async function sendEmail({ toEmail, toName, subject, data }) {
       templateId = templateIds[1];
       templateParams.user_email = data.email;
       templateParams.user_password = data.password;
+      templateParams.referral = data.referral;
       break;
 
     default:
