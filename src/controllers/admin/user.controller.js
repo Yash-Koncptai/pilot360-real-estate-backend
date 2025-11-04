@@ -64,6 +64,34 @@ class UserController {
       next(err);
     }
   }
+
+  async deleteuser(req, res, next) {
+    try {
+      const query = req.query;
+
+      if (!query.id) {
+        return res.status(400).json({
+          success: false,
+          message: "user id is required.",
+        });
+      }
+
+      const user = await User.findOne({ where: { id: query.id } });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: "user not found." });
+      }
+
+      await user.destroy();
+
+      res
+        .status(200)
+        .json({ success: true, message: "user deleted successfully." });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new UserController();

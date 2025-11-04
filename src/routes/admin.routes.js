@@ -36,6 +36,7 @@ router.get("/analytics", auth, dashboardController.analytics);
 // Users
 router.get("/users", auth, userController.usersfetching);
 router.post("/users/add", auth, userController.adduser);
+router.delete("/users/delete", auth, userController.deleteuser);
 
 // Suggestions
 router.post("/suggestions", auth, suggestionController.suggestproperty);

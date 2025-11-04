@@ -610,6 +610,38 @@ On success, a random password is generated and emailed to the user along with th
 
 - **400 Bad Request** – missing required fields.
 
+---
+
+### `DELETE /api/admin/users/delete?id=<USER ID>`
+
+User deleting.
+
+**Method:** `DELETE`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "user deleted successfully."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – user id is required.
+- **404 Not Found** – user not found.
+
+---
+
 ### `GET /api/admin/inquiries`
 
 Inquiries fetching.
