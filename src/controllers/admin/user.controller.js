@@ -1,5 +1,6 @@
 const User = require("../../model/user/user.model");
 const Property = require("../../model/admin/property.model");
+const Inquiry = require("../../model/user/inquiry.model");
 const { generateReferralCode } = require("../../utils/referralCode");
 const { sendEmail } = require("../../utils/emailjs");
 const bcrypt = require("bcryptjs");
@@ -78,16 +79,19 @@ class UserController {
 
       const user = await User.findOne({ where: { id: query.id } });
       if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, message: "user not found." });
+        return res.status(404).json({
+          success: false,
+          message: "user not found.",
+        });
       }
 
       await user.destroy();
+      await Inquiry.destroy({ where: { user_id: query.id } });
 
-      res
-        .status(200)
-        .json({ success: true, message: "user deleted successfully." });
+      res.status(200).json({
+        success: true,
+        message: "user deleted successfully.",
+      });
     } catch (err) {
       next(err);
     }
