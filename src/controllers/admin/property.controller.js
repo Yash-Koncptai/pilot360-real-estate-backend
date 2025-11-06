@@ -102,7 +102,9 @@ class PropertyController {
         liquidity_risk: liquidity_risk,
         physical_risk: physical_risk,
         risk_percentage: risk_percentage,
-        return_of_investment: ((investment_gain - price) / price) * 100,
+        return_of_investment: parseFloat(
+          (((investment_gain - price) / price) * 100).toFixed(2)
+        ),
       });
 
       res.status(201).json({
@@ -225,8 +227,12 @@ class PropertyController {
       property.liquidity_risk = liquidity_risk;
       property.physical_risk = physical_risk;
       property.risk_percentage = risk_percentage;
-      property.return_of_investment =
-        ((property.investment_gain - property.price) / property.price) * 100;
+      property.return_of_investment = parseFloat(
+        (
+          ((property.investment_gain - property.price) / property.price) *
+          100
+        ).toFixed(2)
+      );
 
       await property.save();
 

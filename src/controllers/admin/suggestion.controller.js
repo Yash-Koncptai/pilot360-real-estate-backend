@@ -46,6 +46,7 @@ class SuggestionController {
         message: "property suggested successfully.",
       });
     } catch (err) {
+      console.log("error in suggestproperty", err);
       next(err);
     }
   }

@@ -21,6 +21,7 @@ router.get(
 );
 router.get("/property", auth.optionalAuth, propertyController.propertyfetch);
 router.get("/recommendations", auth, propertyController.getRecommendations);
+router.get("/suggestions", auth, propertyController.getSuggestedProperties);
 
 // Inquiry
 router.post("/inquiry", auth, inquiryController.productinquiry);

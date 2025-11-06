@@ -249,7 +249,6 @@ Content-Type: multipart/form-data
 | electricity_connectivity | boolean | Electricity connectivity availability            |
 | gas_connectivity         | boolean | Gas connectivity availability                    |
 | investment_gain          | number  | Potential investment gain percentage             |
-| return_of_investment     | number  | Return on investment percentage                  |
 | market_risk              | boolean | Market risk indicator                            |
 | regulatory_risk          | boolean | Regulatory risk indicator                        |
 | financial_risk           | boolean | Financial risk indicator                         |
@@ -276,12 +275,13 @@ Content-Type: multipart/form-data
 - `electricity_connectivity`: true
 - `gas_connectivity`: false
 - `investment_gain`: 15000
-- `return_of_investment`: 15
 - `market_risk`: true
 - `regulatory_risk`: false
 - `financial_risk`: false
 - `liquidity_risk`: true
 - `physical_risk`: false
+
+**Note:** `return_of_investment` is calculated automatically using the formula: `((investment_gain - price) / price) * 100`. The `investment_gain` represents the total amount you can gain (price + actual gain amount). It should not be provided in the request body.
 
 ---
 
@@ -367,12 +367,13 @@ Content-Type: multipart/form-data
 | electricity_connectivity | boolean | Electricity connectivity availability      |
 | gas_connectivity         | boolean | Gas connectivity availability              |
 | investment_gain          | number  | Potential investment gain percentage       |
-| return_of_investment     | number  | Return on investment percentage            |
 | market_risk              | boolean | Market risk indicator                      |
 | regulatory_risk          | boolean | Regulatory risk indicator                  |
 | financial_risk           | boolean | Financial risk indicator                   |
 | liquidity_risk           | boolean | Liquidity risk indicator                   |
 | physical_risk            | boolean | Physical risk indicator                    |
+
+**Note:** `return_of_investment` is calculated automatically using the formula: `((investment_gain - price) / price) * 100`. The `investment_gain` represents the total amount you can gain (price + actual gain amount). It should not be provided in the request body.
 
 ---
 
@@ -396,7 +397,6 @@ Content-Type: multipart/form-data
 - `electricity_connectivity`: true
 - `gas_connectivity`: false
 - `investment_gain`: 15000
-- `return_of_investment`: 15
 - `market_risk`: true
 - `regulatory_risk`: false
 - `financial_risk`: false
@@ -1187,6 +1187,86 @@ Content-Type: application/json
 **Error Responses:**
 
 - **403 Forbidden** – please set your preferences first.
+
+---
+
+---
+
+### `GET /api/user/suggestions`
+
+Get properties suggested by admins for the authenticated user.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "properties": [
+    {
+      "id": 1,
+      "title": "Farm Land in Rajasthan",
+      "price": 500000,
+      "type": "Agricultural",
+      "size": "10 acres",
+      "primary_purpose": "Personal Use",
+      "location": "Jaipur, Rajasthan",
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "description": "Fertile land with canal access.",
+      "private": true,
+      "features": ["Well", "Canal", "Fenced"],
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "matchPercentage": 100,
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15000,
+      "return_of_investment": 15,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
+      "views": 15,
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
+    }
+  ],
+  "message": "suggested properties fetched successfully."
+}
+```
+
+**Note:**
+
+- Properties are returned in the order suggested by the admin.
+- Match percentage is included when user has set preferences.
+- If no properties have been suggested by admins, returns an empty array.
+
+**Empty Response (No Suggestions):**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "properties": [],
+  "message": "no properties suggested by admin yet."
+}
+```
 
 ---
 

@@ -1,6 +1,7 @@
 const Property = require("../../model/admin/property.model");
 const Preference = require("../../model/user/preference.model");
 const User = require("../../model/user/user.model");
+const Suggestion = require("../../model/admin/suggestion.model");
 const { Op } = require("sequelize");
 
 class PropertyController {
@@ -329,6 +330,91 @@ class PropertyController {
         success: true,
         properties: propertiesWithScores,
         message: "recommended properties fetched successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getSuggestedProperties(req, res, next) {
+    try {
+      const userId = req.user.id;
+
+      // Find suggestion for the current user
+      const suggestion = await Suggestion.findOne({
+        where: { user_id: userId },
+      });
+
+      // If no suggestion exists, return empty array
+      if (
+        !suggestion ||
+        !suggestion.property_ids ||
+        suggestion.property_ids.length === 0
+      ) {
+        return res.status(200).json({
+          success: true,
+          properties: [],
+          message: "no properties suggested by admin yet.",
+        });
+      }
+
+      // Fetch all properties where id is in property_ids array
+      const properties = await Property.findAll({
+        where: {
+          id: { [Op.in]: suggestion.property_ids },
+        },
+      });
+
+      // Create a map for quick lookup
+      const propertyMap = new Map(
+        properties.map((property) => [property.id, property])
+      );
+
+      // Sort properties according to the order in property_ids array
+      const orderedProperties = suggestion.property_ids
+        .map((propertyId) => propertyMap.get(propertyId))
+        .filter((property) => property !== undefined); // Filter out deleted properties
+
+      // Calculate match percentage for each property if user preferences exist
+      let propertiesWithMatch;
+
+      try {
+        const userPreference = await Preference.findOne({
+          where: { user_id: userId },
+        });
+
+        if (userPreference) {
+          propertiesWithMatch = await Promise.all(
+            orderedProperties.map(async (property) => {
+              const propertyData = property.toJSON();
+              const matchPercentage =
+                await PropertyController.calculateMatchPercentage(
+                  property,
+                  userPreference
+                );
+              return { ...propertyData, matchPercentage };
+            })
+          );
+        } else {
+          propertiesWithMatch = orderedProperties.map((property) =>
+            property.toJSON()
+          );
+        }
+      } catch (preferenceError) {
+        // If preference calculation fails, continue without match percentage
+        console.log(
+          "Error calculating match percentage:",
+          preferenceError.message
+        );
+        propertiesWithMatch = orderedProperties.map((property) =>
+          property.toJSON()
+        );
+      }
+
+      return res.status(200).json({
+        success: true,
+        properties: propertiesWithMatch,
+        message: "suggested properties fetched successfully.",
       });
     } catch (err) {
       next(err);
