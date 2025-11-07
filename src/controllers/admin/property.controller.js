@@ -229,7 +229,8 @@ class PropertyController {
       property.risk_percentage = risk_percentage;
       property.return_of_investment = parseFloat(
         (
-          ((property.investment_gain - property.price) / property.price) *
+          ((property.investment_gain - property.price) /
+            property.investment_gain) *
           100
         ).toFixed(2)
       );
