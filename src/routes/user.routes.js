@@ -4,6 +4,7 @@ const propertyController = require("../controllers/user/property.controller");
 const inquiryController = require("../controllers/user/inquiry.controller");
 const auth = require("../middleware/user.middleware");
 const preferenceController = require("../controllers/user/preference.controller");
+const upload = require("../utils/multer");
 
 const router = express.Router();
 
@@ -22,6 +23,12 @@ router.get(
 router.get("/property", auth.optionalAuth, propertyController.propertyfetch);
 router.get("/recommendations", auth, propertyController.getRecommendations);
 router.get("/suggestions", auth, propertyController.getSuggestedProperties);
+router.post(
+  "/property/add",
+  auth.verifyBroker,
+  upload.array("images", 20),
+  propertyController.addproperty
+);
 
 // Inquiry
 router.post("/inquiry", auth, inquiryController.productinquiry);

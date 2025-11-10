@@ -54,7 +54,9 @@ class UserController {
   async usersfetching(req, res, next) {
     try {
       const users = await User.findAll();
-      const properties = await Property.findAll();
+      const properties = await Property.findAll({
+        where: { status: "approved" },
+      });
       res.status(200).json({
         success: true,
         users: users,

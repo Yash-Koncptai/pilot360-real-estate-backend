@@ -65,7 +65,9 @@ class PropertyController {
     try {
       const query = req.query;
 
-      const property = await Property.findOne({ where: { id: query.id } });
+      const property = await Property.findOne({
+        where: { id: query.id, status: "approved" },
+      });
       if (!property)
         return res
           .status(404)
@@ -151,7 +153,9 @@ class PropertyController {
         where.location = { [Op.iLike]: pattern };
       }
 
-      const properties = await Property.findAll({ where });
+      const properties = await Property.findAll({
+        where: { status: "approved" },
+      });
 
       // Calculate match percentage for each property if user is authenticated
       let propertiesWithMatch = properties.map((property) => property.toJSON());
@@ -272,6 +276,7 @@ class PropertyController {
 
       const matchedProperties = await Property.findAll({
         where: anyMatchWhere,
+        status: "approved",
       });
 
       // Compute match percentage per property and sort by highest match
@@ -359,9 +364,11 @@ class PropertyController {
       }
 
       // Fetch all properties where id is in property_ids array
+      // Only show approved properties
       const properties = await Property.findAll({
         where: {
           id: { [Op.in]: suggestion.property_ids },
+          status: "approved",
         },
       });
 
@@ -415,6 +422,110 @@ class PropertyController {
         success: true,
         properties: propertiesWithMatch,
         message: "suggested properties fetched successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async addproperty(req, res, next) {
+    try {
+      const {
+        title,
+        price,
+        type,
+        size,
+        primary_purpose,
+        location,
+        latitude,
+        longitude,
+        description,
+        privacy,
+        features,
+        water_connectivity,
+        electricity_connectivity,
+        gas_connectivity,
+        investment_gain,
+        market_risk,
+        regulatory_risk,
+        financial_risk,
+        liquidity_risk,
+        physical_risk,
+      } = req.body;
+      if (
+        !title ||
+        !price ||
+        !type ||
+        !size ||
+        !location ||
+        !latitude ||
+        !longitude ||
+        !primary_purpose ||
+        !investment_gain
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, message: "missing required fields." });
+      }
+
+      const images = req.files
+        ? req.files.map((file) =>
+            file.path.replace(/^src[\\/]/, "").replace(/\\/g, "/")
+          )
+        : [];
+
+      let featuresArray = [];
+      if (typeof features === "string") {
+        featuresArray = features.split(",").map((f) => f.trim());
+      }
+      let ch = {
+        market_risk: { true: 30 },
+        regulatory_risk: { true: 25 },
+        financial_risk: { true: 10 },
+        liquidity_risk: { true: 20 },
+        physical_risk: { true: 15 },
+      };
+      let risk_percentage =
+        (ch.market_risk[market_risk] || 0) +
+        (ch.regulatory_risk[regulatory_risk] || 0) +
+        (ch.financial_risk[financial_risk] || 0) +
+        (ch.liquidity_risk[liquidity_risk] || 0) +
+        (ch.physical_risk[physical_risk] || 0);
+      const property = await Property.create({
+        title: title,
+        price: price,
+        type: type,
+        size: size,
+        primary_purpose: primary_purpose,
+        location: location,
+        latitude: latitude,
+        longitude: longitude,
+        description: description,
+        private: privacy,
+        features: featuresArray,
+        images: images,
+        water_connectivity: water_connectivity,
+        electricity_connectivity: electricity_connectivity,
+        gas_connectivity: gas_connectivity,
+        investment_gain: investment_gain,
+        market_risk: market_risk,
+        regulatory_risk: regulatory_risk,
+        financial_risk: financial_risk,
+        liquidity_risk: liquidity_risk,
+        physical_risk: physical_risk,
+        risk_percentage: risk_percentage,
+        return_of_investment: parseFloat(
+          (((investment_gain - price) / price) * 100).toFixed(2)
+        ),
+        status: "pending",
+        created_by: req.user.id,
+      });
+
+      res.status(201).json({
+        success: true,
+        property: property,
+        message:
+          "property submitted for review. it will be visible after admin approval.",
       });
     } catch (err) {
       next(err);

@@ -4,7 +4,9 @@ const Delete = require("../../utils/filedelete");
 class PropertyController {
   async showproperties(req, res, next) {
     try {
-      const properties = await Property.findAll();
+      const properties = await Property.findAll({
+        where: { status: "approved" },
+      });
 
       res.status(200).json({
         success: true,
@@ -263,6 +265,69 @@ class PropertyController {
       res
         .status(200)
         .json({ success: true, message: "property deleted successfully." });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getPendingProperties(req, res, next) {
+    try {
+      const properties = await Property.findAll({
+        where: { status: "pending" },
+        order: [["createdAt", "DESC"]],
+      });
+
+      res.status(200).json({
+        success: true,
+        properties: properties,
+        message: "pending properties fetched successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async approveProperty(req, res, next) {
+    try {
+      const query = req.query;
+
+      const property = await Property.findOne({ where: { id: query.id } });
+      if (!property) {
+        return res
+          .status(404)
+          .json({ success: false, message: "property not found." });
+      }
+
+      property.status = "approved";
+      await property.save();
+
+      res.status(200).json({
+        success: true,
+        property: property,
+        message: "property approved successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async rejectProperty(req, res, next) {
+    try {
+      const query = req.query;
+
+      const property = await Property.findOne({ where: { id: query.id } });
+      if (!property) {
+        return res
+          .status(404)
+          .json({ success: false, message: "property not found." });
+      }
+
+      await property.destroy();
+
+      res.status(200).json({
+        success: true,
+        message: "property rejected successfully.",
+      });
     } catch (err) {
       next(err);
     }

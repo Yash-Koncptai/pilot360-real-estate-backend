@@ -735,6 +735,159 @@ Content-Type: application/json
 
 ---
 
+---
+
+### `GET /api/admin/property/pending`
+
+Request pending Properties fetching.
+
+**Method:** `GET`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "pending properties fetched successfully.",
+  "properties": [
+    {
+      "id": 1,
+      "title": "editing land",
+      "price": 67,
+      "type": "edit type",
+      "size": "56 sqft",
+      "primary_purpose": "Personal Use",
+      "location": "kolkata",
+      "latitude": 8.3,
+      "longitude": 6.34,
+      "description": "editing description",
+      "private": true,
+      "features": null,
+      "images": [
+        "uploads/properties/1759230299218-739692831.png",
+        "uploads/properties/1759230299249-703738047.png"
+      ],
+      "water_connectivity": true,
+      "electricity_connectivity": true,
+      "gas_connectivity": false,
+      "investment_gain": 15000,
+      "investment_cost": 450000,
+      "market_risk": true,
+      "regulatory_risk": false,
+      "financial_risk": false,
+      "liquidity_risk": true,
+      "physical_risk": false,
+      "risk_percentage": 50,
+      "updatedAt": "2025-09-22T13:20:52.081Z",
+      "createdAt": "2025-09-22T13:20:52.081Z"
+    }
+  ]
+}
+```
+
+---
+
+---
+
+### `PUT /api/admin/property/approve`
+
+Property request approval.
+
+**Method:** `PUT`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "property approved successfully.",
+  "property": {
+    "id": 1,
+    "title": "editing land",
+    "price": 67,
+    "type": "edit type",
+    "size": "56 sqft",
+    "primary_purpose": "Personal Use",
+    "location": "kolkata",
+    "latitude": 8.3,
+    "longitude": 6.34,
+    "description": "editing description",
+    "private": true,
+    "features": null,
+    "images": [
+      "uploads/properties/1759230299218-739692831.png",
+      "uploads/properties/1759230299249-703738047.png"
+    ],
+    "water_connectivity": true,
+    "electricity_connectivity": true,
+    "gas_connectivity": false,
+    "investment_gain": 15000,
+    "investment_cost": 450000,
+    "market_risk": true,
+    "regulatory_risk": false,
+    "financial_risk": false,
+    "liquidity_risk": true,
+    "physical_risk": false,
+    "risk_percentage": 50,
+    "updatedAt": "2025-09-22T13:20:52.081Z",
+    "createdAt": "2025-09-22T13:20:52.081Z"
+  }
+}
+```
+
+**Error Responses:**
+
+- **404 Not Found** – property not found.
+
+---
+
+---
+
+### `DELETE /api/admin/property/reject`
+
+Property request approval.
+
+**Method:** `DELETE`
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "property rejected successfully."
+}
+```
+
+**Error Responses:**
+
+- **404 Not Found** – property not found.
+
+---
+
 ## 📘 User API Endpoints
 
 ---
@@ -1323,5 +1476,125 @@ Content-Type: application/json
 
 - **400 Bad Request** – missing required fields.
 - **400 Bad Request** – invalid budget range.
+
+---
+
+### `POST /api/user/property/add`
+
+Property adding for Brokers.
+
+**Method:** `POST`
+**Request Headers:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: multipart/form-data
+```
+
+**Request Body (multipart/form-data):**
+
+| Field                    | Type    | Description                                |
+| ------------------------ | ------- | ------------------------------------------ |
+| title                    | string  | Title of the property                      |
+| price                    | number  | Price of the property                      |
+| type                     | string  | Property type (e.g., Agricultural, etc.)   |
+| size                     | string  | Size of the property (e.g., "10 acres")    |
+| primary_purpose          | string  | Primary purpose (e.g., Personal Use)       |
+| location                 | string  | Location address                           |
+| latitude                 | number  | Latitude coordinate                        |
+| longitude                | number  | Longitude coordinate                       |
+| description              | string  | Description of the property                |
+| privacy                  | boolean | Privacy flag (true or false)               |
+| features                 | string  | Comma-separated list of features           |
+| existingimages           | string  | Comma-separated list of non-deleted images |
+| deletedimages            | string  | Comma-separated list of deleted images     |
+| images                   | file[]  | One or more image files of the property    |
+| water_connectivity       | boolean | Water connectivity availability            |
+| electricity_connectivity | boolean | Electricity connectivity availability      |
+| gas_connectivity         | boolean | Gas connectivity availability              |
+| investment_gain          | number  | Potential investment gain percentage       |
+| market_risk              | boolean | Market risk indicator                      |
+| regulatory_risk          | boolean | Regulatory risk indicator                  |
+| financial_risk           | boolean | Financial risk indicator                   |
+| liquidity_risk           | boolean | Liquidity risk indicator                   |
+| physical_risk            | boolean | Physical risk indicator                    |
+
+**Note:** `return_of_investment` is calculated automatically using the formula: `((investment_gain - price) / price) * 100`. The `investment_gain` represents the total amount you can gain (price + actual gain amount). It should not be provided in the request body.
+
+---
+
+**Example (multipart/form-data body):**
+
+- `title`: Farm Land in Rajasthan
+- `price`: 500000
+- `type`: Agricultural
+- `size`: 10 acres
+- `primary_purpose`: Personal Use
+- `location`: Jaipur, Rajasthan
+- `latitude`: 26.9124
+- `longitude`: 75.7873
+- `description`: Fertile land with canal access.
+- `privacy`: true
+- `features`: Well, Canal, Fenced
+- `images`: [file1.png, file2.png, ...]
+- `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `water_connectivity`: true
+- `electricity_connectivity`: true
+- `gas_connectivity`: false
+- `investment_gain`: 15000
+- `market_risk`: true
+- `regulatory_risk`: false
+- `financial_risk`: false
+- `liquidity_risk`: true
+- `physical_risk`: false
+
+---
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "message": "property submitted for review. it will be visible after admin approval.",
+  "property": {
+    "id": 1,
+    "title": "Farm Land in Rajasthan",
+    "price": 500000,
+    "type": "Agricultural",
+    "size": "10 acres",
+    "primary_purpose": "Personal Use",
+    "location": "Jaipur, Rajasthan",
+    "latitude": 26.9124,
+    "longitude": 75.7873,
+    "description": "Fertile land with canal access.",
+    "private": true,
+    "features": ["Well", "Canal", "Fenced"],
+    "images": [
+      "uploads/properties/1759230299218-739692831.png",
+      "uploads/properties/1759230299249-703738047.png"
+    ],
+    "water_connectivity": true,
+    "electricity_connectivity": true,
+    "gas_connectivity": false,
+    "investment_gain": 15000,
+    "return_of_investment": 15,
+    "market_risk": true,
+    "regulatory_risk": false,
+    "financial_risk": false,
+    "liquidity_risk": true,
+    "physical_risk": false,
+    "risk_percentage": 50,
+    "updatedAt": "2025-09-22T13:20:52.081Z",
+    "createdAt": "2025-09-22T13:20:52.081Z"
+  }
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request** – missing required fields.
 
 ---

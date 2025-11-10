@@ -15,6 +15,7 @@ router.post("/login", adminController.login);
 
 // Property Management
 router.get("/property", auth, propertyController.showproperties);
+router.get("/property/pending", auth, propertyController.getPendingProperties);
 router.post(
   "/property/add",
   auth,
@@ -27,6 +28,8 @@ router.put(
   upload.array("images", 20),
   propertyController.editproperty
 );
+router.put("/property/approve", auth, propertyController.approveProperty);
+router.delete("/property/reject", auth, propertyController.rejectProperty);
 router.delete("/property/delete", auth, propertyController.deleteproperty);
 
 // Dashboard

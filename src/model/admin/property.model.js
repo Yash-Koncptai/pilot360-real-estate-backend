@@ -101,6 +101,15 @@ const Property = sequelize.define(
     views: {
       type: DataTypes.INTEGER,
     },
+    status: {
+      type: DataTypes.ENUM("pending", "approved", "rejected"),
+      defaultValue: "approved",
+      allowNull: false,
+    },
+    created_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     timestamps: true,
