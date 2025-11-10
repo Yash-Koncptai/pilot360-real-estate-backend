@@ -969,6 +969,7 @@ User otp verification.
 ```json
 {
   "success": true,
+  "role": "Regular User",
   "message": "email and mobile verified successfully."
 }
 ```
@@ -1039,6 +1040,7 @@ User login.
 {
   "success": true,
   "token": "JWT TOKEN",
+  "role": "Regular User",
   "message": "user logged in successfully."
 }
 ```

@@ -94,6 +94,7 @@ class UserController {
 
       res.status(200).json({
         success: true,
+        role: user.role,
         message: "email and mobile verified successfully.",
       });
     } catch (err) {
@@ -175,6 +176,7 @@ class UserController {
       res.status(200).json({
         success: true,
         token: token,
+        role: user.role,
         message: "user logged in successfully.",
       });
     } catch (err) {
