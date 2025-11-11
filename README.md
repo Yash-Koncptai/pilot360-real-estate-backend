@@ -797,7 +797,7 @@ Content-Type: application/json
 
 ---
 
-### `PUT /api/admin/property/approve`
+### `PUT /api/admin/property/approve?id=<PROPERTY ID>`
 
 Property request approval.
 
@@ -859,7 +859,7 @@ Content-Type: application/json
 
 ---
 
-### `DELETE /api/admin/property/reject`
+### `DELETE /api/admin/property/reject?id=<PROPERTY ID>`
 
 Property request approval.
 
