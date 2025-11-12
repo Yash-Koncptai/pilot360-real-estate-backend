@@ -41,7 +41,21 @@ class PropertyController {
         financial_risk,
         liquidity_risk,
         physical_risk,
+        taluka,
+        district,
+        nearest_town,
+        nearest_road,
+        distance_to_nearest_road,
+        nearest_school_colleges,
+        zoning_status,
+        na_permit,
+        upcoming_infra,
+        ownership_type,
+        rera_registration,
+        town_planning_permit,
+        jantri_rate,
       } = req.body;
+
       if (
         !title ||
         !price ||
@@ -68,6 +82,19 @@ class PropertyController {
       if (typeof features === "string") {
         featuresArray = features.split(",").map((f) => f.trim());
       }
+
+      let schoolCollegeArray = [];
+      if (typeof nearest_school_colleges === "string") {
+        schoolCollegeArray = nearest_school_colleges
+          .split(",")
+          .map((itm) => itm.trim());
+      }
+
+      let infraArray = [];
+      if (typeof upcoming_infra === "string") {
+        infraArray = upcoming_infra.split("|").map((itm) => itm.trim());
+      }
+
       let ch = {
         market_risk: { true: 30 },
         regulatory_risk: { true: 25 },
@@ -75,43 +102,58 @@ class PropertyController {
         liquidity_risk: { true: 20 },
         physical_risk: { true: 15 },
       };
+
       let risk_percentage =
         (ch.market_risk[market_risk] || 0) +
         (ch.regulatory_risk[regulatory_risk] || 0) +
         (ch.financial_risk[financial_risk] || 0) +
         (ch.liquidity_risk[liquidity_risk] || 0) +
         (ch.physical_risk[physical_risk] || 0);
+
       const property = await Property.create({
-        title: title,
-        price: price,
-        type: type,
-        size: size,
-        primary_purpose: primary_purpose,
-        location: location,
-        latitude: latitude,
-        longitude: longitude,
-        description: description,
+        title,
+        price,
+        type,
+        size,
+        primary_purpose,
+        location,
+        latitude,
+        longitude,
+        description,
         private: privacy,
         features: featuresArray,
         images: images,
-        water_connectivity: water_connectivity,
-        electricity_connectivity: electricity_connectivity,
-        gas_connectivity: gas_connectivity,
-        investment_gain: investment_gain,
-        market_risk: market_risk,
-        regulatory_risk: regulatory_risk,
-        financial_risk: financial_risk,
-        liquidity_risk: liquidity_risk,
-        physical_risk: physical_risk,
-        risk_percentage: risk_percentage,
+        water_connectivity,
+        electricity_connectivity,
+        gas_connectivity,
+        investment_gain,
+        market_risk,
+        regulatory_risk,
+        financial_risk,
+        liquidity_risk,
+        physical_risk,
+        risk_percentage,
         return_of_investment: parseFloat(
           (((investment_gain - price) / price) * 100).toFixed(2)
         ),
+        taluka,
+        district,
+        nearest_town,
+        nearest_road,
+        distance_to_nearest_road,
+        nearest_school_colleges: schoolCollegeArray,
+        zoning_status,
+        na_permit,
+        upcoming_infra: infraArray,
+        ownership_type,
+        rera_registration,
+        town_planning_permit,
+        jantri_rate,
       });
 
       res.status(201).json({
         success: true,
-        property: property,
+        property,
         message: "property added successfully.",
       });
     } catch (err) {
@@ -122,6 +164,7 @@ class PropertyController {
   async editproperty(req, res, next) {
     try {
       const query = req.query;
+
       const {
         title,
         price,
@@ -145,7 +188,21 @@ class PropertyController {
         financial_risk,
         liquidity_risk,
         physical_risk,
+        taluka,
+        district,
+        nearest_town,
+        nearest_road,
+        distance_to_nearest_road,
+        nearest_school_colleges,
+        zoning_status,
+        na_permit,
+        upcoming_infra,
+        ownership_type,
+        rera_registration,
+        town_planning_permit,
+        jantri_rate,
       } = req.body;
+
       if (
         !title ||
         !price ||
@@ -175,6 +232,7 @@ class PropertyController {
             file.path.replace(/^src[\\/]/, "").replace(/\\/g, "/")
           )
         : [];
+
       if (typeof existingimages === "string") {
         const existing = existingimages.split(",").map((f) => f.trim());
         newimages = existing.concat(images);
@@ -193,6 +251,19 @@ class PropertyController {
       if (typeof features === "string") {
         featuresArray = features.split(",").map((f) => f.trim());
       }
+
+      let schoolCollegeArray = [];
+      if (typeof nearest_school_colleges === "string") {
+        schoolCollegeArray = nearest_school_colleges
+          .split(",")
+          .map((v) => v.trim());
+      }
+
+      let infraArray = [];
+      if (typeof upcoming_infra === "string") {
+        infraArray = upcoming_infra.split("|").map((v) => v.trim());
+      }
+
       let ch = {
         market_risk: { true: 30 },
         regulatory_risk: { true: 25 },
@@ -200,6 +271,7 @@ class PropertyController {
         liquidity_risk: { true: 20 },
         physical_risk: { true: 15 },
       };
+
       let risk_percentage =
         (ch.market_risk[market_risk] || 0) +
         (ch.regulatory_risk[regulatory_risk] || 0) +
@@ -222,7 +294,7 @@ class PropertyController {
       property.water_connectivity = water_connectivity;
       property.electricity_connectivity = electricity_connectivity;
       property.gas_connectivity = gas_connectivity;
-      property.investment_gain = investment_gain || property.investment_gain;
+      property.investment_gain = investment_gain;
       property.market_risk = market_risk;
       property.regulatory_risk = regulatory_risk;
       property.financial_risk = financial_risk;
@@ -230,18 +302,27 @@ class PropertyController {
       property.physical_risk = physical_risk;
       property.risk_percentage = risk_percentage;
       property.return_of_investment = parseFloat(
-        (
-          ((property.investment_gain - property.price) /
-            property.investment_gain) *
-          100
-        ).toFixed(2)
+        (((investment_gain - price) / price) * 100).toFixed(2)
       );
+      property.taluka = taluka;
+      property.district = district;
+      property.nearest_town = nearest_town;
+      property.nearest_road = nearest_road;
+      property.distance_to_nearest_road = distance_to_nearest_road;
+      property.nearest_school_colleges = schoolCollegeArray;
+      property.zoning_status = zoning_status;
+      property.na_permit = na_permit;
+      property.upcoming_infra = infraArray;
+      property.ownership_type = ownership_type;
+      property.rera_registration = rera_registration;
+      property.town_planning_permit = town_planning_permit;
+      property.jantri_rate = jantri_rate;
 
       await property.save();
 
       res.status(200).json({
         success: true,
-        property: property,
+        property,
         message: "property updated successfully.",
       });
     } catch (err) {

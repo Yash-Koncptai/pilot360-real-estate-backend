@@ -110,6 +110,45 @@ const Property = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    taluka: {
+      type: DataTypes.STRING,
+    },
+    district: {
+      type: DataTypes.STRING,
+    },
+    nearest_town: {
+      type: DataTypes.STRING,
+    },
+    nearest_road: {
+      type: DataTypes.STRING,
+    },
+    distance_to_nearest_road: {
+      type: DataTypes.FLOAT,
+    },
+    nearest_school_colleges: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+    },
+    zoning_status: {
+      type: DataTypes.STRING,
+    },
+    na_permit: {
+      type: DataTypes.BOOLEAN,
+    },
+    upcoming_infra: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
+    },
+    ownership_type: {
+      type: DataTypes.STRING,
+    },
+    rera_registration: {
+      type: DataTypes.STRING,
+    },
+    town_planning_permit: {
+      type: DataTypes.STRING,
+    },
+    jantri_rate: {
+      type: DataTypes.FLOAT,
+    },
   },
   {
     timestamps: true,
