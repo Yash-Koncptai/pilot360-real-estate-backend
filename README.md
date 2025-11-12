@@ -1672,31 +1672,44 @@ Content-Type: multipart/form-data
 
 **Request Body (multipart/form-data):**
 
-| Field                    | Type    | Description                                |
-| ------------------------ | ------- | ------------------------------------------ |
-| title                    | string  | Title of the property                      |
-| price                    | number  | Price of the property                      |
-| type                     | string  | Property type (e.g., Agricultural, etc.)   |
-| size                     | string  | Size of the property (e.g., "10 acres")    |
-| primary_purpose          | string  | Primary purpose (e.g., Personal Use)       |
-| location                 | string  | Location address                           |
-| latitude                 | number  | Latitude coordinate                        |
-| longitude                | number  | Longitude coordinate                       |
-| description              | string  | Description of the property                |
-| privacy                  | boolean | Privacy flag (true or false)               |
-| features                 | string  | Comma-separated list of features           |
-| existingimages           | string  | Comma-separated list of non-deleted images |
-| deletedimages            | string  | Comma-separated list of deleted images     |
-| images                   | file[]  | One or more image files of the property    |
-| water_connectivity       | boolean | Water connectivity availability            |
-| electricity_connectivity | boolean | Electricity connectivity availability      |
-| gas_connectivity         | boolean | Gas connectivity availability              |
-| investment_gain          | number  | Potential investment gain percentage       |
-| market_risk              | boolean | Market risk indicator                      |
-| regulatory_risk          | boolean | Regulatory risk indicator                  |
-| financial_risk           | boolean | Financial risk indicator                   |
-| liquidity_risk           | boolean | Liquidity risk indicator                   |
-| physical_risk            | boolean | Physical risk indicator                    |
+| Field                    | Type    | Description                                                       |
+| ------------------------ | ------- | ----------------------------------------------------------------- |
+| title                    | string  | Title of the property                                             |
+| price                    | number  | Price of the property                                             |
+| type                     | string  | Property type (e.g., Agricultural, etc.)                          |
+| size                     | string  | Size of the property (e.g., "10 acres")                           |
+| primary_purpose          | string  | Primary purpose (e.g., Personal Use, Investment)                  |
+| location                 | string  | Location address                                                  |
+| latitude                 | number  | Latitude coordinate                                               |
+| longitude                | number  | Longitude coordinate                                              |
+| description              | string  | Description of the property                                       |
+| privacy                  | boolean | Privacy flag (true or false)                                      |
+| features                 | string  | Comma-separated list of features                                  |
+| images                   | file[]  | One or more image files of the property                           |
+| existingimages           | string  | Comma-separated list of already saved image URLs                  |
+| deletedimages            | string  | Comma-separated list of image URLs to delete from server          |
+| water_connectivity       | boolean | Water connectivity availability                                   |
+| electricity_connectivity | boolean | Electricity connectivity availability                             |
+| gas_connectivity         | boolean | Gas connectivity availability                                     |
+| investment_gain          | number  | Expected investment gain amount                                   |
+| market_risk              | boolean | Market risk indicator                                             |
+| regulatory_risk          | boolean | Regulatory risk indicator                                         |
+| financial_risk           | boolean | Financial risk indicator                                          |
+| liquidity_risk           | boolean | Liquidity risk indicator                                          |
+| physical_risk            | boolean | Physical risk indicator                                           |
+| taluka                   | string  | Taluka where property is located                                  |
+| district                 | string  | District of the property                                          |
+| nearest_town             | string  | Name of the nearest town                                          |
+| nearest_road             | string  | Name of nearest major road                                        |
+| distance_to_nearest_road | number  | Distance (in km/m) to nearest road                                |
+| nearest_school_colleges  | string  | Comma-separated list of nearest schools or colleges               |
+| zoning_status            | string  | Zoning status of the land                                         |
+| na_permit                | boolean | Whether NA permit is available (Yes/No)                           |
+| upcoming_infra           | string  | Comma-separated list of upcoming infrastructure near the property |
+| ownership_type           | string  | Ownership status/type                                             |
+| rera_restration          | string  | RERA registration number / details                                |
+| town_planning_permit     | string  | Town planning approval details                                    |
+| jantri_rate              | number  | Jantri rate according to government                               |
 
 **Note:** `return_of_investment` is calculated automatically using the formula: `((investment_gain - price) / price) * 100`. The `investment_gain` represents the total amount you can gain (price + actual gain amount). It should not be provided in the request body.
 
@@ -1715,9 +1728,7 @@ Content-Type: multipart/form-data
 - `description`: Fertile land with canal access.
 - `privacy`: true
 - `features`: Well, Canal, Fenced
-- `images`: [file1.png, file2.png, ...]
-- `existingimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
-- `deletedimages`: uploads/properties/1759230299218-739692831.png, uploads/properties/1759230299249-703738047.png
+- `images`: [file1.png, file2.png]
 - `water_connectivity`: true
 - `electricity_connectivity`: true
 - `gas_connectivity`: false
@@ -1727,6 +1738,19 @@ Content-Type: multipart/form-data
 - `financial_risk`: false
 - `liquidity_risk`: true
 - `physical_risk`: false
+- `taluka`: Phagi
+- `district`: Jaipur
+- `nearest_town`: Dudu
+- `nearest_road`: NH-48
+- `distance_to_nearest_road`: 2.5
+- `nearest_school_colleges`: St. Xavier School, Govt. Arts College
+- `zoning_status`: Agricultural Zone
+- `na_permit`: yes
+- `upcoming_infra`: Ring Road Extension, New Industrial Hub
+- `ownership_type`: Freehold
+- `rera_restration`: RAJ-2025-12345
+- `town_planning_permit`: Approved
+- `jantri_rate`: 550
 
 ---
 

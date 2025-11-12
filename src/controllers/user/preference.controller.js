@@ -40,8 +40,7 @@ class PreferenceController {
       }
 
       const user = await User.findOne({ where: { email: email } });
-
-      // Normalize inputs to string arrays as required by DataTypes.ARRAY(DataTypes.STRING)
+      
       const normalizeToStringArray = (value) => {
         if (Array.isArray(value)) {
           return value.map((v) => String(v).trim()).filter((v) => v.length > 0);

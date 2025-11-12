@@ -5,7 +5,6 @@ const Suggestion = require("../../model/admin/suggestion.model");
 const { Op } = require("sequelize");
 
 class PropertyController {
-  // Helper function to calculate match percentage for a property
   static async calculateMatchPercentage(property, userPreference) {
     const hasLandInterests =
       Array.isArray(userPreference.land_interests) &&
@@ -76,7 +75,6 @@ class PropertyController {
       property.views++;
       await property.save();
 
-      // Calculate match percentage if user is authenticated
       let propertyWithMatch = property.toJSON();
       console.log("🔍 Debug - req.user:", req.user);
 
@@ -108,7 +106,6 @@ class PropertyController {
             console.log("❌ User not found in database");
           }
         } catch (preferenceError) {
-          // If preference calculation fails, continue without match percentage
           console.log(
             "❌ Error calculating match percentage:",
             preferenceError.message
@@ -157,7 +154,6 @@ class PropertyController {
         where: { status: "approved" },
       });
 
-      // Calculate match percentage for each property if user is authenticated
       let propertiesWithMatch = properties.map((property) => property.toJSON());
       console.log("🔍 Debug - req.user:", req.user);
 
@@ -194,7 +190,6 @@ class PropertyController {
             console.log("❌ User not found in database");
           }
         } catch (preferenceError) {
-          // If preference calculation fails, continue without match percentage
           console.log(
             "❌ Error calculating match percentage:",
             preferenceError.message
@@ -231,7 +226,6 @@ class PropertyController {
         });
       }
 
-      // Build OR-based search to fetch properties that match ANY preference
       const orConditions = [];
 
       const hasLandInterests =
@@ -279,7 +273,6 @@ class PropertyController {
         status: "approved",
       });
 
-      // Compute match percentage per property and sort by highest match
       const totalCriteria =
         [
           hasLandInterests,
@@ -345,12 +338,10 @@ class PropertyController {
     try {
       const userId = req.user.id;
 
-      // Find suggestion for the current user
       const suggestion = await Suggestion.findOne({
         where: { user_id: userId },
       });
 
-      // If no suggestion exists, return empty array
       if (
         !suggestion ||
         !suggestion.property_ids ||
@@ -363,8 +354,6 @@ class PropertyController {
         });
       }
 
-      // Fetch all properties where id is in property_ids array
-      // Only show approved properties
       const properties = await Property.findAll({
         where: {
           id: { [Op.in]: suggestion.property_ids },
@@ -372,17 +361,14 @@ class PropertyController {
         },
       });
 
-      // Create a map for quick lookup
       const propertyMap = new Map(
         properties.map((property) => [property.id, property])
       );
 
-      // Sort properties according to the order in property_ids array
       const orderedProperties = suggestion.property_ids
         .map((propertyId) => propertyMap.get(propertyId))
-        .filter((property) => property !== undefined); // Filter out deleted properties
+        .filter((property) => property !== undefined);
 
-      // Calculate match percentage for each property if user preferences exist
       let propertiesWithMatch;
 
       try {
@@ -408,7 +394,6 @@ class PropertyController {
           );
         }
       } catch (preferenceError) {
-        // If preference calculation fails, continue without match percentage
         console.log(
           "Error calculating match percentage:",
           preferenceError.message
@@ -451,7 +436,21 @@ class PropertyController {
         financial_risk,
         liquidity_risk,
         physical_risk,
+        taluka,
+        district,
+        nearest_town,
+        nearest_road,
+        distance_to_nearest_road,
+        nearest_school_colleges,
+        zoning_status,
+        na_permit,
+        upcoming_infra,
+        ownership_type,
+        rera_registration,
+        town_planning_permit,
+        jantri_rate,
       } = req.body;
+
       if (
         !title ||
         !price ||
@@ -478,6 +477,19 @@ class PropertyController {
       if (typeof features === "string") {
         featuresArray = features.split(",").map((f) => f.trim());
       }
+
+      let nearestSchoolArray = [];
+      if (typeof nearest_school_colleges === "string") {
+        nearestSchoolArray = nearest_school_colleges
+          .split(",")
+          .map((f) => f.trim());
+      }
+
+      let upcomingInfraArray = [];
+      if (typeof upcoming_infra === "string") {
+        upcomingInfraArray = upcoming_infra.split(",").map((f) => f.trim());
+      }
+
       let ch = {
         market_risk: { true: 30 },
         regulatory_risk: { true: 25 },
@@ -491,39 +503,54 @@ class PropertyController {
         (ch.financial_risk[financial_risk] || 0) +
         (ch.liquidity_risk[liquidity_risk] || 0) +
         (ch.physical_risk[physical_risk] || 0);
+
       const property = await Property.create({
-        title: title,
-        price: price,
-        type: type,
-        size: size,
-        primary_purpose: primary_purpose,
-        location: location,
-        latitude: latitude,
-        longitude: longitude,
-        description: description,
+        title,
+        price,
+        type,
+        size,
+        primary_purpose,
+        location,
+        latitude,
+        longitude,
+        description,
         private: privacy,
         features: featuresArray,
-        images: images,
-        water_connectivity: water_connectivity,
-        electricity_connectivity: electricity_connectivity,
-        gas_connectivity: gas_connectivity,
-        investment_gain: investment_gain,
-        market_risk: market_risk,
-        regulatory_risk: regulatory_risk,
-        financial_risk: financial_risk,
-        liquidity_risk: liquidity_risk,
-        physical_risk: physical_risk,
-        risk_percentage: risk_percentage,
+        images,
+        water_connectivity,
+        electricity_connectivity,
+        gas_connectivity,
+        investment_gain,
+        market_risk,
+        regulatory_risk,
+        financial_risk,
+        liquidity_risk,
+        physical_risk,
+        risk_percentage,
         return_of_investment: parseFloat(
           (((investment_gain - price) / price) * 100).toFixed(2)
         ),
+        taluka,
+        district,
+        nearest_town,
+        nearest_road,
+        distance_to_nearest_road,
+        nearest_school_colleges: nearestSchoolArray,
+        zoning_status,
+        na_permit,
+        upcoming_infra: upcomingInfraArray,
+        ownership_type,
+        rera_registration,
+        town_planning_permit,
+        jantri_rate,
+
         status: "pending",
         created_by: req.user.id,
       });
 
       res.status(201).json({
         success: true,
-        property: property,
+        property,
         message:
           "property submitted for review. it will be visible after admin approval.",
       });
