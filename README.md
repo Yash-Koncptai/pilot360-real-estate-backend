@@ -1658,6 +1658,47 @@ Content-Type: application/json
 
 ---
 
+### `GET /api/user/preferences/get`
+
+User preferences fetching.
+
+**Method:** `GET`
+
+**Request Header:**
+
+```http
+Authorization: Bearer <JWT Token>
+Content-Type: application/json
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "preference": {
+    "id": 1,
+    "user_id": 7,
+    "primary_purpose": "Personal Use",
+    "budget_min": 5000000,
+    "budget_max": 10000000,
+    "land_interests": ["Agricultural", "Residential"],
+    "preferred_location": "Udaipur",
+    "updatedAt": "2025-10-01T12:00:00.000Z",
+    "createdAt": "2025-10-01T12:00:00.000Z"
+  },
+  "message": "preferences fetched successfully."
+}
+```
+
+**Error Responses:**
+
+- **404 Not Found** – preference not found.
+
+---
+
 ### `POST /api/user/property/add`
 
 Property adding for Brokers.

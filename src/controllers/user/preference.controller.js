@@ -40,7 +40,7 @@ class PreferenceController {
       }
 
       const user = await User.findOne({ where: { email: email } });
-      
+
       const normalizeToStringArray = (value) => {
         if (Array.isArray(value)) {
           return value.map((v) => String(v).trim()).filter((v) => v.length > 0);
@@ -92,6 +92,28 @@ class PreferenceController {
         success: true,
         preference: preference,
         message: "preferences saved successfully.",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async get(req, res, next) {
+    try {
+      const { email } = req.user;
+      const user = await User.findOne({ where: { email: email } });
+      const preference = await Preference.findOne({
+        where: { user_id: user.id },
+      });
+      if (!preference) {
+        return res
+          .status(404)
+          .json({ success: false, message: "preference not found." });
+      }
+      res.status(200).json({
+        success: true,
+        preference: preference,
+        message: "preference fetched successfully.",
       });
     } catch (err) {
       next(err);

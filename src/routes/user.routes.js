@@ -36,5 +36,6 @@ router.post("/contact", inquiryController.contactus);
 
 // Preferences
 router.post("/preferences", auth, preferenceController.save);
+router.get("/preferences/get", auth, preferenceController.get);
 
 module.exports = router;
